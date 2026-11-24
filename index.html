@@ -1,23 +1,23 @@
 <!doctype html>
-<html lang="en" data-type="software" data-radius="soft" data-ground="sand" data-buttons="solid" data-motion>
+<html lang="en" data-type="software" data-radius="soft" data-ground="sage" data-buttons="pill" data-motion>
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Clip Robin: video clipping app for creators</title>
-<meta name="description" content="Queue local videos or YouTube links, transcribe on device with faster-whisper, track active speakers in 9:16 with YuNet face detection, and burn six caption styles on your Windows PC.">
+<meta name="description" content="Turn long podcasts, streams, and tutorials into vertical shorts on your own Windows PC. Queue videos, keep speakers centered, and add captions with zero monthly cloud fees.">
 <meta property="og:type" content="website">
 <meta property="og:title" content="Clip Robin: video clipping app for creators">
-<meta property="og:description" content="Cut 9:16 vertical shorts on your own Windows PC with local faster-whisper transcription, YuNet face detection, and six caption styles.">
-<meta property="og:image" content="share.jpg">
+<meta property="og:description" content="Turn long videos into 9:16 vertical shorts on your own Windows PC. Queue batches, frame active speakers, and style captions locally.">
+<meta property="og:image" content="share.png">
 <meta name="twitter:card" content="summary_large_image">
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
-<meta name="theme-color" content="#f7f9f8">
+<meta name="theme-color" content="#09090b">
 <!-- <link rel="canonical" href="https://cliprobin.com/"> -->
 <meta name="site-kind" content="software">
 <meta name="page-type" content="software">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wdth,wght@75..100,400..700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Reddit+Sans:wght@400..700&family=JetBrains+Mono:wght@400..500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="assets/system.css">
 <link rel="stylesheet" href="assets/ui/cards.css">
 <link rel="stylesheet" href="assets/motion/motion.css">
@@ -26,187 +26,618 @@
 <link rel="stylesheet" href="assets/icons/icon.css">
 <style>
 :root {
-  --p-bg: #f7f9f8; --p-surface: #ebf0ee; --p-ink: #06525c; --p-muted: #2f737d;
-  --p-accent: #06525c; --p-accent-ink: #f7f9f8; --p-action: #06525c; --p-action-ink: #f7f9f8;
-  --p-inv-bg: #06525c; --p-inv-surface: #205d66; --p-inv-ink: #f7f9f8; --p-inv-muted: #c1d0d2;
-  --p-inv-accent: #f7f9f8; --p-inv-accent-ink: #06525c; --p-inv-action: #f7f9f8; --p-inv-action-ink: #06525c;
-  --font-display: "Instrument Sans", system-ui, sans-serif;
-  --font-text: "Instrument Sans", system-ui, sans-serif;
-  --font-mono: "DM Mono", ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+  --p-bg: #09090b; --p-surface: #121215; --p-ink: #f4f4f5; --p-muted: #a1a1aa;
+  --p-accent: #10b981; --p-accent-ink: #09090b; --p-action: #10b981; --p-action-ink: #09090b;
+  --p-inv-bg: #f4f4f5; --p-inv-surface: #e1e1e2; --p-inv-ink: #09090b; --p-inv-muted: #565658;
+  --p-inv-accent: #09090b; --p-inv-accent-ink: #f4f4f5; --p-inv-action: #09090b; --p-inv-action-ink: #f4f4f5;
+  --font-display: "Reddit Sans", system-ui, sans-serif;
+  --font-text: "Reddit Sans", system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
   --display-weight: 500;
-  --display-tracking: -0.028em;
-  --display-tracking-xl: -0.036em;
-  --display-stretch: 96%;
-  --ly-scale: 1.04;
+  --display-tracking: -0.03em;
+  --display-tracking-xl: -0.04em;
 }
 </style>
 <link rel="stylesheet" href="assets/ui/base.css">
-<link rel="stylesheet" href="assets/ui/window/fragment.css">
-<link rel="stylesheet" href="assets/ui/terminal-run/fragment.css">
-<link rel="stylesheet" href="assets/ui/files/fragment.css">
-<link rel="stylesheet" href="assets/ui/checklist/fragment.css">
-<link rel="stylesheet" href="assets/ui/toggles/fragment.css">
-<link rel="stylesheet" href="assets/ui/pipeline-board/fragment.css">
-<link rel="stylesheet" href="assets/ui/stat/fragment.css">
-<link rel="stylesheet" href="assets/ui/notify/fragment.css">
 <script>document.documentElement.classList.add('m-enter');setTimeout(()=>document.documentElement.classList.add('m-enter-done'),700)</script>
 <script src="assets/backgrounds/backgrounds.js"></script>
 <script>document.documentElement.classList.add('mo-js');setTimeout(()=>document.documentElement.classList.add('mo-safe'),2500)</script>
 <link rel="modulepreload" href="assets/moments/moments.js">
 <link rel="modulepreload" href="assets/moments/lib.js">
-<link rel="modulepreload" href="assets/moments/word-highlight/moment.js">
-<link rel="stylesheet" href="assets/moments/word-highlight/moment.css">
+<link rel="modulepreload" href="assets/moments/pinned-chapters/moment.js">
+<link rel="stylesheet" href="assets/moments/pinned-chapters/moment.css">
 <style>
-  .hero--centred .hero__lead { color: var(--ink); }
-  .card { --c-text: var(--ink); }
-  footer.closing > .wrap, .closing__links { grid-template-columns: minmax(0, 1fr); }
-  .closing__cta { min-width: 0; }
-  .hero__window {
+  /* Brand logo sizing */
+  .brand-logo { display: inline-flex; align-items: center; gap: 10px; }
+  .brand-logo img { width: 28px; height: 24px; display: block; flex: 0 0 auto; }
+
+  /* Subtle dark-theme contrast tokens matching Clip Robin desktop app */
+  .cr-surface {
+    background: #121215;
+    border: 1px solid #27272a;
+    border-radius: var(--r-lg);
+    color: #f4f4f5;
+  }
+  .cr-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 10px;
+    border-radius: 999px;
+    font-size: 13px;
+    font-weight: 500;
+    background: #18181c;
+    border: 1px solid #27272a;
+    color: #e4e4e7;
+  }
+  .cr-chip--green {
+    background: rgba(16, 185, 129, 0.14);
+    border-color: rgba(16, 185, 129, 0.35);
+    color: #34d399;
+  }
+  .cr-chip--amber {
+    background: rgba(245, 158, 11, 0.14);
+    border-color: rgba(245, 158, 11, 0.35);
+    color: #fbbf24;
+  }
+
+  /* Hero split media: live Clip Robin studio preview */
+  .hero--split .hero__media {
     background:
-      radial-gradient(110% 70% at 75% 110%, #5c4b38 0 42%, transparent 43%),
-      radial-gradient(90% 55% at 15% 105%, #6b5842 0 44%, transparent 45%),
-      linear-gradient(#7d6850, #685540 72%, #544432);
+      radial-gradient(90% 70% at 80% 10%, rgba(16, 185, 129, 0.16), transparent 60%),
+      radial-gradient(70% 60% at 20% 95%, rgba(245, 158, 11, 0.10), transparent 55%),
+      #121215;
+    border: 1px solid #27272a;
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+    gap: 16px;
   }
-  .ui { --u-muted: #1b5962; --u-soft: #1b5962; }
-  .mo-wh__text { font-size: clamp(22px, 1.4vw + 16px, 30px); line-height: 1.3; margin-top: var(--s-4); }
-  .mo-wh .mo-w { color: var(--ink); }
-  .app.ui { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); margin-top: var(--s-7); background: var(--u-bg); border: 1px solid var(--u-border); border-radius: var(--u-r); box-shadow: var(--u-shadow); }
-  .app > .app__pane { position: relative; min-width: 0; min-height: 0; overflow: hidden; }
-  .app > .app__pane + .app__pane { border-left: 1px solid var(--u-line); }
-  .app > .app__pane > .ui-panel { width: 100%; border: 0; border-radius: 0; box-shadow: none; }
-  .app > .app__pane::after { content: ""; position: absolute; inset: auto 0 0 0; height: 40px; background: linear-gradient(transparent, var(--u-bg)); pointer-events: none; }
-  @media (min-width: 1024px) and (max-width: 1279px) { .app.ui { grid-template-columns: minmax(0, 4fr) minmax(0, 8fr); } }
-  @media (max-width: 1023px) {
-    .app.ui { grid-template-columns: minmax(0, 1fr); grid-template-rows: auto minmax(0, 1fr); }
-    .app > .app__pane--list { max-height: 240px; }
-    .app > .app__pane--list::after { display: none; }
-    .app .ui-win__side { display: none; }
-    .app .ui-win__body { grid-template-columns: minmax(0, 1fr); }
-    .app > .app__pane + .app__pane { border-left: 0; border-top: 1px solid var(--u-line); }
+  .hero-win-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-bottom: 12px;
+    border-bottom: 1px solid #27272a;
+    font-size: 13px;
+    color: #a1a1aa;
   }
-  @media (max-width: 639px) {
-    .app.ui { grid-template-rows: minmax(0, 1fr); }
-    .app > .app__pane--list { display: none; }
-    .app > .app__pane + .app__pane { border-top: 0; }
+  .hero-win-brand { display: inline-flex; align-items: center; gap: 8px; color: #f4f4f5; font-weight: 500; }
+  .hero-win-brand img { width: 20px; height: 17px; display: block; }
+  .hero-win-body {
+    flex: 1 1 auto;
+    min-height: 0;
+    display: grid;
+    grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr);
+    gap: 16px;
+    align-items: stretch;
   }
-  #features .panel { --p-h: 312px; }
-  #features > .wrap > .grid .panel { --p-h: 416px; }
-  #captions .frame--split { min-height: 708px; }
-  @media (min-width: 640px) {
-    #features .stage > .at-rise:not(.to-edge) { top: auto; bottom: 20px; }
-    #s-cap > .at-corner { bottom: 24px; }
-    #s-cap .ui-pipe { height: 100%; display: flex; flex-direction: column; }
-    #s-cap .ui-pipe__steps { flex: 1; display: flex; flex-direction: column; justify-content: space-between; }
-    #pricing .card--plan { min-height: 510px; justify-content: space-between; }
+  .hero-phone {
+    position: relative;
+    background: #09090b;
+    border: 1px solid #27272a;
+    border-radius: 14px;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 260px;
   }
-  @media (min-width: 1024px) and (max-width: 1279px) {
-    #features .panel, #features > .wrap > .grid .panel { --p-h: 236px; }
-    #captions .frame--split { min-height: 576px; }
+  .hero-phone video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
   }
-  @media (min-width: 720px) and (max-width: 1023px) {
-    main > :is(section, .section).g2 > .wrap > .grid:last-child,
-    main > :is(section, .section).g2 > .wrap > .group > .grid:last-child { align-self: stretch; flex: 1 1 auto; min-height: 0; }
+  .hero-phone__tag {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    background: rgba(9, 9, 11, 0.86);
+    border: 1px solid rgba(16, 185, 129, 0.45);
+    color: #34d399;
+    font-size: 13px;
+    font-weight: 500;
+    padding: 4px 10px;
+    border-radius: 999px;
   }
+  .hero-clips {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    min-width: 0;
+  }
+  .hero-clip-card {
+    background: #18181c;
+    border: 1px solid #27272a;
+    border-radius: 12px;
+    padding: 12px 14px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  .hero-clip-card--active {
+    border-color: #10b981;
+    background: #151c19;
+  }
+  .hero-clip-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    font-size: 13px;
+    color: #a1a1aa;
+  }
+  .hero-clip-score { color: #fbbf24; font-weight: 500; font-family: var(--font-mono); }
+  .hero-clip-title { font-size: 15px; font-weight: 500; color: #f4f4f5; line-height: 1.35; margin: 0; }
+  .hero-clip-meta { font-size: 13px; color: #a1a1aa; margin: 0; }
+
+  .hero--split .ly-float {
+    background: #18181c;
+    border: 1px solid #3f3f46;
+    color: #f4f4f5;
+  }
+  .hero--split .ly-float__row { color: #a1a1aa; }
+  .hero--split .ly-float__title { color: #f4f4f5; }
+
+  /* Section 2: Real Clip Robin App Frame (Queue + Editor) */
+  .studio-frame {
+    margin-top: var(--s-6);
+    background: #0e0e11;
+    border: 1px solid #27272a;
+    border-radius: var(--r-lg);
+    overflow: hidden;
+  }
+  .studio-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 18px;
+    background: #121215;
+    border-bottom: 1px solid #27272a;
+    font-size: 13px;
+    color: #a1a1aa;
+  }
+  .studio-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+  }
+  .studio-queue {
+    padding: 18px;
+    border-right: 1px solid #27272a;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .studio-label {
+    font-size: 13px;
+    font-weight: 500;
+    color: #a1a1aa;
+    margin: 0 0 4px;
+  }
+  .q-item {
+    background: #18181c;
+    border: 1px solid #27272a;
+    border-radius: 10px;
+    padding: 12px 14px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  .q-item--active { border-color: #10b981; }
+  .q-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    font-size: 14px;
+    font-weight: 500;
+    color: #f4f4f5;
+  }
+  .q-sub { font-size: 13px; color: #a1a1aa; margin: 0; }
+  .q-bar {
+    height: 4px;
+    border-radius: 999px;
+    background: #27272a;
+    overflow: hidden;
+  }
+  .q-bar > span { display: block; height: 100%; background: #10b981; border-radius: 999px; }
+
+  .studio-editor {
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 16px;
+  }
+  .ed-head {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 12px;
+  }
+  .ed-title { font-size: 18px; font-weight: 500; color: #f4f4f5; margin: 0 0 4px; }
+  .ed-sub { font-size: 14px; color: #a1a1aa; margin: 0; }
+  .ed-preview {
+    display: grid;
+    grid-template-columns: minmax(0, 1.35fr) minmax(0, 0.85fr);
+    gap: 16px;
+    align-items: stretch;
+  }
+  .ed-frame-wide {
+    position: relative;
+    background: #18181c;
+    border: 1px solid #27272a;
+    border-radius: 12px;
+    padding: 16px;
+    min-height: 210px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+  .ed-crop-box {
+    position: absolute;
+    top: 16px;
+    bottom: 16px;
+    left: 52%;
+    width: 34%;
+    border: 2px solid #10b981;
+    border-radius: 8px;
+    background: rgba(16, 185, 129, 0.08);
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    padding-top: 8px;
+    font-size: 13px;
+    font-weight: 500;
+    color: #34d399;
+  }
+  .ed-controls {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .ed-ctrl-row {
+    background: #18181c;
+    border: 1px solid #27272a;
+    border-radius: 10px;
+    padding: 10px 12px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 14px;
+    color: #e4e4e7;
+  }
+  .ed-ctrl-val { color: #34d399; font-weight: 500; font-size: 13px; }
+  .ed-timeline {
+    background: #121215;
+    border: 1px solid #27272a;
+    border-radius: 10px;
+    padding: 12px 14px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .ed-track {
+    height: 28px;
+    border-radius: 6px;
+    background: #18181c;
+    position: relative;
+    overflow: hidden;
+  }
+  .ed-segment {
+    position: absolute;
+    top: 3px;
+    bottom: 3px;
+    left: 18%;
+    width: 46%;
+    border-radius: 5px;
+    background: rgba(16, 185, 129, 0.22);
+    border: 1px solid #10b981;
+  }
+
+  /* Section 3-4: Pinned Chapters custom dark visual cards */
+  #workflow .mo-pc__visuals {
+    background: #121215;
+    border: 1px solid #27272a;
+    border-radius: var(--r-lg);
+  }
+  .step-card {
+    width: 100%;
+    height: 100%;
+    padding: 28px;
+    background:
+      radial-gradient(80% 60% at 85% 15%, rgba(16, 185, 129, 0.14), transparent 60%),
+      #121215;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 18px;
+    color: #f4f4f5;
+  }
+  .step-card__head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+  }
+  .step-card__title { font-size: 18px; font-weight: 500; margin: 0; color: #f4f4f5; }
+  .step-visual-box {
+    flex: 1 1 auto;
+    background: #09090b;
+    border: 1px solid #27272a;
+    border-radius: 12px;
+    padding: 18px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 12px;
+  }
+  .reframe-stage {
+    position: relative;
+    height: 220px;
+    background: linear-gradient(135deg, #18181c 0%, #101014 100%);
+    border: 1px solid #27272a;
+    border-radius: 10px;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    padding: 0 24px;
+  }
+  .speaker-sil {
+    width: 72px;
+    height: 112px;
+    border-radius: 36px 36px 12px 12px;
+    background: #27272a;
+    position: relative;
+  }
+  .speaker-sil--on { background: #3f3f46; }
+  .reframe-box {
+    position: absolute;
+    top: 14px;
+    bottom: 14px;
+    right: 18%;
+    width: 124px;
+    border: 2px solid #10b981;
+    border-radius: 10px;
+    background: rgba(16, 185, 129, 0.10);
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    padding-bottom: 10px;
+    font-size: 13px;
+    font-weight: 500;
+    color: #34d399;
+  }
+  .caption-step-split {
+    display: grid;
+    grid-template-columns: 150px minmax(0, 1fr);
+    gap: 16px;
+    align-items: center;
+  }
+  .caption-step-split img {
+    width: 100%;
+    height: 240px;
+    object-fit: cover;
+    border-radius: 10px;
+    border: 1px solid #27272a;
+    display: block;
+  }
+  .transcript-lines {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .t-line {
+    background: #18181c;
+    border: 1px solid #27272a;
+    border-radius: 8px;
+    padding: 10px 12px;
+    font-size: 14px;
+    color: #e4e4e7;
+    display: flex;
+    gap: 10px;
+  }
+  .t-line--on { border-color: #10b981; }
+  .t-time { font-family: var(--font-mono); font-size: 13px; color: #34d399; flex: 0 0 auto; }
+
+  /* Section 5: Interactive Caption Examples Gallery */
+  .cap-controls {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    margin-top: var(--s-5);
+  }
+  .cap-group-label {
+    font-size: 13px;
+    font-weight: 500;
+    color: #a1a1aa;
+    margin: 0 0 10px;
+  }
+  .cap-btn-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+  .cap-opt {
+    min-height: 44px;
+    padding: 0 16px;
+    border-radius: 999px;
+    border: 1px solid #27272a;
+    background: #18181c;
+    color: #e4e4e7;
+    font: 500 15px/1 var(--font-text);
+    cursor: pointer;
+    transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+  }
+  .cap-opt:hover { border-color: #52525b; background: #202026; }
+  .cap-opt[aria-pressed="true"] {
+    background: #10b981;
+    border-color: #10b981;
+    color: #09090b;
+  }
+  .cap-note {
+    background: #18181c;
+    border: 1px solid #27272a;
+    border-radius: var(--r-md);
+    padding: 16px 18px;
+    font-size: 16px;
+    line-height: 1.5;
+    color: #f4f4f5;
+    margin: 0;
+  }
+  .cap-stage {
+    background:
+      radial-gradient(80% 60% at 50% 10%, rgba(16, 185, 129, 0.14), transparent 60%),
+      #09090b;
+    border: 1px solid #27272a;
+    border-radius: var(--r-lg);
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 14px;
+    min-height: 520px;
+  }
+  .cap-phone {
+    position: relative;
+    width: 244px;
+    aspect-ratio: 9 / 16;
+    border-radius: 20px;
+    overflow: hidden;
+    border: 2px solid #27272a;
+    background: #09090b;
+  }
+  .cap-phone video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+  .cap-stage-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    max-width: 340px;
+    gap: 12px;
+    font-size: 14px;
+    color: #a1a1aa;
+  }
+  .cap-pause {
+    min-height: 44px;
+    padding: 0 16px;
+    border-radius: 999px;
+    border: 1px solid #27272a;
+    background: #18181c;
+    color: #f4f4f5;
+    font: 500 14px/1 var(--font-text);
+    cursor: pointer;
+  }
+  .cap-pause:hover { border-color: #52525b; }
+
+  /* Section 6: Pricing & Cloud Comparison */
+  .plan-grid { margin-top: var(--s-5); }
+  .plan-box {
+    background: #121215;
+    border: 1px solid #27272a;
+    border-radius: var(--r-lg);
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  .plan-box--accent { border-color: rgba(16, 185, 129, 0.55); }
+  .plan-head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 12px;
+  }
+  .plan-head h3 { font-size: 20px; margin: 0; color: #f4f4f5; }
+  .plan-price { font-size: 22px; font-weight: 600; color: #34d399; font-family: var(--font-mono); }
+  .plan-box p { margin: 0; font-size: 16px; line-height: 1.5; color: #d4d4d8; }
+  .compare-rows { margin-top: var(--s-6); }
+  .compare-rows .rows__name small { display: block; font-weight: 400; color: var(--muted); font-size: var(--t-small); }
+  .compare-rows .rows__value { color: #34d399; font-weight: 500; }
+
+  /* FAQ spacing & contrast */
+  #faq .faq { margin-top: var(--s-5); }
+  #faq .faq__item { border-color: #27272a; }
+
+  /* Footer close-word adjustments */
+  footer.closing .close__word { color: #18181c; }
+
+  /* Responsive adjustments */
   @media (min-width: 640px) and (max-width: 1023px) {
-    #features { --h: 2; }
-    #features .panel, #features > .wrap > .grid .panel { --p-h: 312px; }
-    #captions > .wrap > .grid { flex: 1 1 auto; display: flex; flex-direction: column; }
-    #captions .frame--split { flex: 1 1 auto; min-height: 440px; margin-top: var(--s-5); }
-    #pricing .card--plan { grid-column: auto / span 6; }
+    .studio-queue .q-item:nth-child(n+3) { display: none; }
+    .studio-queue, .studio-editor { padding: 14px; gap: 10px; }
+    .ed-frame-wide { min-height: 150px; }
+    .cap-stage { min-height: 310px; padding: 16px; margin-top: var(--s-4); }
+    .cap-phone { width: 168px; }
+    .cap-controls { gap: 14px; margin-top: var(--s-4); }
+    .step-card { padding: 16px; gap: 10px; }
+    .step-visual-box { padding: 12px; gap: 8px; }
+    .step-visual-box .q-item:nth-child(n+3) { display: none; }
+    .reframe-stage { height: 128px; }
+    .caption-step-split { grid-template-columns: 110px minmax(0, 1fr); gap: 12px; }
+    .caption-step-split img { height: 148px; }
+    .transcript-lines .t-line:nth-child(n+3) { display: none; }
+  }
+  @media (max-width: 1023px) {
+    .studio-grid { grid-template-columns: minmax(0, 1fr); }
+    .studio-queue { border-right: 0; border-bottom: 1px solid #27272a; }
+    .hero-win-body { grid-template-columns: minmax(0, 1fr); }
+    .hero-clips { display: none; }
   }
   @media (max-width: 639px) {
-    #features .panel, #features > .wrap > .grid .panel { --p-h: 184px; }
-    #features .stage { --fade-h: 0px; }
-    #features :is(.ui-files__grid, .ui-checks__list, .ui-toggles__list) > li:nth-child(n+3) { display: none; }
-    #features .ui-stat__svg { height: 48px; }
-    #captions .frame--split { min-height: 256px; margin-top: var(--s-5); }
+    .hero--split .hero__media { padding: 12px; }
+    .hero-phone { min-height: 220px; }
+    .ed-preview { grid-template-columns: minmax(0, 1fr); }
+    .ed-frame-wide { min-height: 140px; }
+    .studio-queue .q-item:nth-child(n+3) { display: none; }
+    .cap-phone { width: 190px; }
+    .cap-stage { min-height: 340px; padding: 16px; margin-top: var(--s-4); }
+    .step-card { padding: 12px; gap: 6px; }
+    .step-visual-box { padding: 8px; gap: 6px; }
+    .step-visual-box .q-item:nth-child(n+2) { display: none; }
+    .reframe-stage { height: 96px; }
+    .caption-step-split { grid-template-columns: 80px minmax(0, 1fr); gap: 8px; }
+    .caption-step-split img { height: 104px; }
+    .transcript-lines .t-line:nth-child(n+2) { display: none; }
+    #workflow { --hm: 2; min-height: 200lvh; }
+    #workflow .mo-pc__steps { gap: 12px; }
+    #faq .faq { margin-top: var(--s-4); }
+    #faq .faq__item { padding-block: 12px; }
     #pricing { --hm: 2; }
-    #faq .mo-wh__text { font-size: 18px; margin-top: var(--s-2); }
-    #faq .grid { row-gap: var(--s-4); }
-    #faq .faq > .faq__item { padding: var(--s-3) 0; gap: var(--s-1); }
-    #faq .faq__item > h3 { font-size: 16px; line-height: 1.3; }
-    #faq .faq__item > p { font-size: 16px; line-height: 1.4; }
-    footer.closing.footer--statement { padding-block: var(--s-7) var(--padb); }
-    footer.closing > .wrap { row-gap: var(--s-4); }
-    .closing__cta { gap: var(--s-3); }
-    .btn--xl.btn--wide { padding-inline: var(--s-4); font-size: 16px; }
-    .closing__links { gap: var(--s-3); }
-    .closing__links > .grid { row-gap: var(--s-2); }
-    .footer ul { gap: 0; }
-    .footer :is(h3, h4):not(.closing__cta *) { margin-bottom: var(--s-1); }
-    .footer__legal { margin-top: var(--s-2); padding-top: var(--s-2); gap: var(--s-2) var(--s-4); }
+    #examples { --hm: 2; }
+    #studio { --hm: 2; }
   }
-  @media (max-width: 389px) {
-    .nav:not(.is-open) .nav__actions { display: none; }
-    .nav:not(.is-open) .nav__toggle { margin-left: auto; }
-  }
-  @media (max-width: 359px) {
-    .closing__cta h2 { font-size: 24px; }
-    .closing__links .footer__lede { font-size: 16px; }
-    .closing__links .footer__col { grid-column: auto / span 6; }
-    .btn { padding-inline: var(--s-3); font-size: 14px; }
-  }
-  .menu-card .panel { --p-h: 160px; }
 </style>
 </head>
 <body>
 <!-- type: software
-     deal: palette teal-on-paper (off-white studio paper ground #f7f9f8 and deep teal ink #06525c keep timeline transcripts, 9:16 crop frames, and caption presets legible without dark-mode glare), type instrument, radius soft, hero centred, nav nav-mega, close close-type, footer footer-statement, rhythm space, buttons solid, mark wordmark, ground sand, effect silk-folds (hero), card ground gradient-mesh (features)
-     moments: word-highlight in #faq -->
+     deal: hero split, nav nav-centre, close close-word, footer footer-statement, rhythm surface-pairs, buttons pill, mark client-logo, ground sage
+     palette: brand (#09090b bg, #121215 surface, #f4f4f5 ink, #a1a1aa muted, #10b981 accent) matching Clip Robin's own desktop app theme and logo
+     moments: pinned-chapters on #workflow -->
 
-<header class="nav">
+<header class="nav nav--centre">
   <div class="wrap nav__bar">
     <a class="skip-link" href="#top">Skip to content</a>
-    <a class="nav__logo" href="#top">Clip Robin</a>
+    <a class="nav__logo brand-logo" href="#top">
+      <img src="client/logo-mark.svg" alt="" width="28" height="24" aria-hidden="true">
+      <span>Clip Robin</span>
+    </a>
     <nav class="nav__links" aria-label="Main">
-      <div class="nav__item">
-        <a class="nav__link" href="#studio">Studio <svg class="chev" viewBox="0 0 12 12" aria-hidden="true"><path d="M3 4.5l3 3 3-3" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
-        <div class="nav__menu">
-          <div class="wrap grid">
-            <div class="menu-col span-3">
-              <p class="t-label">Local engine</p>
-              <a href="#studio">Studio batch queue<span>Queue MP4, MKV, MOV and YouTube</span></a>
-              <a href="#features">Local video clipping<span>faster-whisper and YuNet 9:16 crop</span></a>
-            </div>
-            <div class="menu-col span-3">
-              <p class="t-label">Captions &amp; plans</p>
-              <a href="#captions">Captions and 9:16 framing<span>Karaoke, Robin, Punch, Pill, Clean</span></a>
-              <a href="#pricing">Pricing and video plans<span>Free local cuts or $12 Pro plan</span></a>
-            </div>
-            <a class="menu-card span-3 start-10" href="#faq">
-              <div class="panel" aria-hidden="true">
-                <div class="stage">
-                  <div class="at-corner" style="--ax:24px;--ay:20px">
-                    <div class="ui ui-panel ui-checks" data-ui="checklist" data-ui-still>
-                      <div class="ui-checks__head">
-                        <div class="ui-title">Release v0.1.30</div>
-                        <span class="ui-spacer"></span>
-                        <div class="ui-meta" data-checks-count>3 of 3</div>
-                      </div>
-                      <div class="ui-checks__bar"><i data-checks-bar style="--k:1"></i></div>
-                      <ul class="ui-checks__list">
-                        <li class="ui-check is-done"><span class="ui-check__box"><svg viewBox="0 0 16 16"><path d="m4.5 8.2 2.3 2.3 4.7-5"/></svg></span><span class="ui-check__label">Signed Windows installer</span></li>
-                        <li class="ui-check is-done"><span class="ui-check__box"><svg viewBox="0 0 16 16"><path d="m4.5 8.2 2.3 2.3 4.7-5"/></svg></span><span class="ui-check__label">6 ASS caption presets</span></li>
-                        <li class="ui-check is-done"><span class="ui-check__box"><svg viewBox="0 0 16 16"><path d="m4.5 8.2 2.3 2.3 4.7-5"/></svg></span><span class="ui-check__label">YuNet speaker lock</span></li>
-                      </ul>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <span class="t-card">Questions on local video clipping</span>
-              <span class="t-small muted">Auto-updates from GitHub Releases</span>
-            </a>
-          </div>
-        </div>
-      </div>
-      <div class="nav__item"><a class="nav__link" href="#features">Features</a></div>
-      <div class="nav__item"><a class="nav__link" href="#captions">Captions</a></div>
+      <div class="nav__item"><a class="nav__link" href="#studio">Studio</a></div>
+      <div class="nav__item"><a class="nav__link" href="#workflow">Workflow</a></div>
+      <div class="nav__item"><a class="nav__link" href="#examples">Captions</a></div>
       <div class="nav__item"><a class="nav__link" href="#pricing">Pricing</a></div>
-      <div class="nav__item"><a class="nav__link" href="#faq">Questions</a></div>
     </nav>
     <div class="nav__actions">
-      <a class="nav__link" href="https://github.com/abdullohtariq/ClipRobin/releases">Releases</a>
-      <a class="btn btn--primary" data-release-download href="https://github.com/abdullohtariq/ClipRobin/releases/download/v0.1.30/Clip.Robin_0.1.30_x64-setup.exe">Download for Windows</a>
+      <a class="btn btn--primary" data-release-download href="https://github.com/abdullohtariq/ClipRobin/releases/latest">Download for Windows</a>
     </div>
     <button class="nav__toggle" type="button" aria-expanded="false" aria-label="Menu">
       <svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true"><path d="M2 5h14M2 13h14" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
@@ -215,42 +646,115 @@
 </header>
 
 <main id="top">
-  <section class="hero hero--centred" data-enter aria-labelledby="hero-h">
-    <div class="wrap">
-      <div class="hero-text">
-        <div class="hero__c">
-          <span class="pill"><span data-release-version>v0.1.30</span><span class="muted">Windows PC</span></span>
-          <h1 id="hero-h">Clip Robin video clipping app</h1>
-          <p class="hero__lead">Queue videos or YouTube links, transcribe locally with faster-whisper, track 9:16 speakers with YuNet face detection, and burn six caption styles from $0.</p>
-          <div class="btn-row">
-            <a class="btn btn--primary" data-release-download href="https://github.com/abdullohtariq/ClipRobin/releases/download/v0.1.30/Clip.Robin_0.1.30_x64-setup.exe">Download for Windows<svg class="m-arrow" viewBox="0 0 12 12" aria-hidden="true"><path class="m-arrow__stem" d="M1 6h8"/><path class="m-arrow__head" d="M4.5 2.5 8 6l-3.5 3.5"/></svg></a>
-            <a class="btn btn--secondary" href="#studio">See the studio</a>
+  <!-- Screen 1: Hero (split) -->
+  <section class="hero hero--split" data-enter aria-labelledby="hero-h">
+    <div class="wrap"><div class="hero-text grid hero__grid">
+      <div class="hero__text span-5">
+        <p class="hero__kicker"><span class="dot" aria-hidden="true"></span>Windows 10 &amp; 11 desktop app &middot; <span data-release-version>v0.1.32</span></p>
+        <h1 id="hero-h">Video clipping app for creators</h1>
+        <p class="hero__lead">Turn long podcasts, streams, and tutorials into 9:16 vertical shorts on your own PC. Unlimited video length, $0 monthly cloud fees.</p>
+        <div class="btn-row">
+          <a class="btn btn--primary" data-release-download href="https://github.com/abdullohtariq/ClipRobin/releases/latest">Download for Windows<svg class="m-arrow" viewBox="0 0 12 12" aria-hidden="true"><path class="m-arrow__stem" d="M1 6h8"/><path class="m-arrow__head" d="M4.5 2.5 8 6l-3.5 3.5"/></svg></a>
+          <a class="btn btn--secondary" href="#examples">See caption styles</a>
+        </div>
+      </div>
+
+      <div class="hero__media span-6 start-7">
+        <div class="hero-win-bar">
+          <span class="hero-win-brand">
+            <img src="client/logo-mark.svg" alt="" width="20" height="17" aria-hidden="true">
+            Clip Robin Studio
+          </span>
+          <span class="cr-chip cr-chip--green">Running on this PC</span>
+        </div>
+        <div class="hero-win-body">
+          <div class="hero-phone">
+            <video src="client/caption-previews/robin__pop.mp4" poster="client/caption-previews/robin__pop.jpg" autoplay muted loop playsinline aria-label="Vertical clip preview with emerald active-word captions"></video>
+            <span class="hero-phone__tag">9:16 &middot; Follow speaker</span>
+          </div>
+          <div class="hero-clips">
+            <div class="hero-clip-card hero-clip-card--active">
+              <div class="hero-clip-top"><span>Clip 01 &middot; 0:34</span><span class="hero-clip-score">Strong hook</span></div>
+              <p class="hero-clip-title">Why most podcasts quit after ten episodes</p>
+              <p class="hero-clip-meta">Robin captions &middot; Active speaker crop</p>
+            </div>
+            <div class="hero-clip-card">
+              <div class="hero-clip-top"><span>Clip 02 &middot; 0:48</span><span class="hero-clip-score">Ready</span></div>
+              <p class="hero-clip-title">How we cut editing time from four hours to ten minutes</p>
+              <p class="hero-clip-meta">Karaoke captions &middot; Saved to disk</p>
+            </div>
+            <div class="hero-clip-card">
+              <div class="hero-clip-top"><span>Clip 03 &middot; 0:26</span><span class="hero-clip-score">Ready</span></div>
+              <p class="hero-clip-title">The one microphone mistake that ruins interviews</p>
+              <p class="hero-clip-meta">Punch captions &middot; Ready for Shorts</p>
+            </div>
           </div>
         </div>
-        <div class="hero__window frame" data-fx="silk-folds" data-fx-seed="17" data-fx-params='{"tone":1}' data-fx-palette='{"bg":"#6e5a44","surface":"#856f56","ink":"#1f1a14","accent":"#4a3a28"}' role="img" aria-label="Clip Robin desktop window showing multi-video batch queue and rendered 9:16 vertical clips">
-          <div class="ly-piece ui ui-panel ui-win" data-ui="window" data-open="Queued" data-work="Framing" data-done="Ready" aria-hidden="true">
-            <div class="ui-win__bar">
-              <span class="ui-dots" aria-hidden="true"><i></i><i></i><i></i></span>
-              <span class="ui-win__crumb">Studio <i>/</i> <b>Queue</b></span>
-              <span class="ui-spacer"></span>
-              <span class="ui-win__search" aria-hidden="true"><svg class="ui-icon" viewBox="0 0 16 16"><circle cx="7" cy="7" r="4.5"/><path d="m10.5 10.5 3 3"/></svg><span class="ui-win__ph">Search</span><span class="ui-kbd">/</span></span>
+        <div class="ly-float">
+          <div class="ly-float__row"><span class="ly-live">Local export</span><span>0 MB uploaded</span></div>
+          <div class="ly-float__title">Podcast Ep. 42 &rarr; 6 vertical shorts</div>
+        </div>
+      </div>
+    </div></div>
+  </section>
+
+  <!-- Screen 2: App Frame (Queue & Editor) -->
+  <section class="section ground-surface" id="studio" aria-labelledby="studio-h">
+    <div class="wrap">
+      <div class="section-head">
+        <h2 id="studio-h">One queue for all your footage. <span class="muted">Drop files or paste YouTube links.</span></h2>
+      </div>
+      <div class="studio-frame ui" aria-label="Clip Robin desktop queue and clip editor preview">
+        <div class="studio-bar">
+          <span>Batch Queue &middot; 4 videos loaded</span>
+          <span class="cr-chip cr-chip--amber">No minute quota</span>
+        </div>
+        <div class="studio-grid">
+          <div class="studio-queue">
+            <p class="studio-label">Up next on your PC</p>
+            <div class="q-item q-item--active">
+              <div class="q-row"><span>Podcast_Ep42_Full.mp4</span><span class="cr-chip cr-chip--green">6 clips done</span></div>
+              <p class="q-sub">58 min &middot; Speaker tracked &middot; Captions ready</p>
+              <div class="q-bar"><span style="width: 100%"></span></div>
             </div>
-            <div class="ui-win__body">
-              <nav class="ui-win__side" aria-hidden="true">
-                <span class="ui-win__nav is-on"><svg class="ui-icon" viewBox="0 0 16 16"><path d="M2.5 9h3l1 1.5h3l1-1.5h3"/><path d="M2.5 9 4 3.5h8L13.5 9v3.5h-11z"/></svg>Queue<em>4</em></span>
-                <span class="ui-win__nav"><svg class="ui-icon" viewBox="0 0 16 16"><circle cx="8" cy="6" r="2.5"/><path d="M3.5 13.5c.6-2.3 2.4-3.5 4.5-3.5s3.9 1.2 4.5 3.5"/></svg>YuNet<em>18</em></span>
-                <span class="ui-win__nav"><svg class="ui-icon" viewBox="0 0 16 16"><circle cx="8" cy="8" r="5.5"/><path d="M8 5v3l2 1.5"/></svg>Whisper<em>4</em></span>
-                <span class="ui-win__nav"><svg class="ui-icon" viewBox="0 0 16 16"><path d="m3.5 8.4 2.8 2.8 6.2-6.4"/></svg>Done</span>
-              </nav>
-              <div class="ui-win__main">
-                <div class="ui-win__cols" aria-hidden="true"><span>Video</span><span>Pipeline</span><span>Status</span><span>Time</span></div>
-                <ul class="ui-win__rows">
-                  <li class="ui-win__row" data-row><span class="ui-avatar" data-tone="1">EP</span><span class="ui-win__who">Podcast 42</span><span class="ui-win__sub">YuNet 9:16 · Karaoke</span><span class="ui-win__st is-done" data-st>Ready</span><span class="ui-win__age">48m</span></li>
-                  <li class="ui-win__row" data-row><span class="ui-avatar" data-tone="3">YT</span><span class="ui-win__who">Founder AMA</span><span class="ui-win__sub">Whisper · Robin Pop</span><span class="ui-win__st is-you" data-st>Framing</span><span class="ui-win__age">54m</span></li>
-                  <li class="ui-win__row" data-row><span class="ui-avatar" data-tone="4">LV</span><span class="ui-win__who">Stream VOD</span><span class="ui-win__sub">Speaker Cut · Punch</span><span class="ui-win__st" data-st>Queued</span><span class="ui-win__age">92m</span></li>
-                  <li class="ui-win__row" data-row><span class="ui-avatar" data-tone="2">KY</span><span class="ui-win__who">Keynote 4K</span><span class="ui-win__sub">Gemini Hook · Pill</span><span class="ui-win__st is-done" data-st>Ready</span><span class="ui-win__age">42m</span></li>
-                </ul>
+            <div class="q-item">
+              <div class="q-row"><span>YouTube interview link</span><span>74%</span></div>
+              <p class="q-sub">41 min &middot; Centering active speaker</p>
+              <div class="q-bar"><span style="width: 74%"></span></div>
+            </div>
+            <div class="q-item">
+              <div class="q-row"><span>Product_Demo_Raw.mov</span><span>Queued</span></div>
+              <p class="q-sub">22 min &middot; Waiting for transcript</p>
+            </div>
+            <div class="q-item">
+              <div class="q-row"><span>Friday_Livestream.mkv</span><span>Queued</span></div>
+              <p class="q-sub">1 hr 45 min &middot; Runs overnight</p>
+            </div>
+          </div>
+          <div class="studio-editor">
+            <div class="ed-head">
+              <div>
+                <p class="ed-title">Clip 01: Why most podcasts quit after ten episodes</p>
+                <p class="ed-sub">00:14:22 to 00:14:56 &middot; 34 seconds &middot; 9:16 vertical</p>
               </div>
+              <span class="cr-chip cr-chip--green">Saved locally</span>
+            </div>
+            <div class="ed-preview">
+              <div class="ed-frame-wide">
+                <span class="cr-chip">Original 16:9 widescreen</span>
+                <div class="ed-crop-box">9:16 speaker lock</div>
+                <span class="q-sub">Tracks face movement smoothly</span>
+              </div>
+              <div class="ed-controls">
+                <div class="ed-ctrl-row"><span>Framing</span><span class="ed-ctrl-val">Follow speaker</span></div>
+                <div class="ed-ctrl-row"><span>Caption look</span><span class="ed-ctrl-val">Robin &middot; Pop</span></div>
+                <div class="ed-ctrl-row"><span>Top-line hook</span><span class="ed-ctrl-val">Enabled</span></div>
+                <div class="ed-ctrl-row"><span>Export folder</span><span class="ed-ctrl-val">Videos\Clips</span></div>
+              </div>
+            </div>
+            <div class="ed-timeline">
+              <div class="q-row"><span>Clip trim range</span><span class="q-sub">0:34 selected</span></div>
+              <div class="ed-track"><div class="ed-segment"></div></div>
             </div>
           </div>
         </div>
@@ -258,487 +762,352 @@
     </div>
   </section>
 
-  <section class="section" id="studio" aria-labelledby="studio-h">
-    <div class="wrap">
-      <div class="grid">
-        <div class="span-5">
-          <h2 id="studio-h">Studio batch queue and local video engine</h2>
-        </div>
-        <div class="span-6 start-7">
-          <p>Drop local recordings or paste YouTube links into the queue. Clip Robin runs faster-whisper transcription, YuNet ONNX face tracking, and FFmpeg rendering on your PC for $0 a minute.</p>
-          <p style="margin-top:var(--s-4)"><a class="link" href="#features">See local video clipping features</a></p>
-        </div>
-      </div>
-      <div class="ui app fill" role="img" aria-label="Clip Robin studio queue beside the local Whisper, YuNet ONNX and FFmpeg terminal pipeline" data-ui-pause-host>
-        <div class="app__pane app__pane--list">
-          <div class="ui ui-panel ui-win" data-ui="window" data-open="Queued" data-work="Active" data-done="Saved" data-ui-still>
-            <div class="ui-win__bar">
-              <span class="ui-dots" aria-hidden="true"><i></i><i></i><i></i></span>
-              <span class="ui-win__crumb">Studio <i>/</i> <b>Queue</b></span>
-              <span class="ui-spacer"></span>
-              <span class="ui-win__search" aria-hidden="true"><svg class="ui-icon" viewBox="0 0 16 16"><circle cx="7" cy="7" r="4.5"/><path d="m10.5 10.5 3 3"/></svg><span class="ui-win__ph">Search</span><span class="ui-kbd">/</span></span>
-            </div>
-            <div class="ui-win__body">
-              <nav class="ui-win__side" aria-hidden="true">
-                <span class="ui-win__nav is-on"><svg class="ui-icon" viewBox="0 0 16 16"><path d="M2.5 9h3l1 1.5h3l1-1.5h3"/><path d="M2.5 9 4 3.5h8L13.5 9v3.5h-11z"/></svg>Queue<em>5</em></span>
-                <span class="ui-win__nav"><svg class="ui-icon" viewBox="0 0 16 16"><circle cx="8" cy="6" r="2.5"/><path d="M3.5 13.5c.6-2.3 2.4-3.5 4.5-3.5s3.9 1.2 4.5 3.5"/></svg>Shorts<em>28</em></span>
-                <span class="ui-win__nav"><svg class="ui-icon" viewBox="0 0 16 16"><circle cx="8" cy="8" r="5.5"/><path d="M8 5v3l2 1.5"/></svg>Links<em>12</em></span>
-                <span class="ui-win__nav"><svg class="ui-icon" viewBox="0 0 16 16"><path d="m3.5 8.4 2.8 2.8 6.2-6.4"/></svg>Saved</span>
-              </nav>
-              <div class="ui-win__main">
-                <div class="ui-win__cols" aria-hidden="true"><span>Video</span><span>Mode</span><span>State</span><span>Clips</span></div>
-                <ul class="ui-win__rows">
-                  <li class="ui-win__row" data-row><span class="ui-avatar" data-tone="1">P1</span><span class="ui-win__who">Podcast 42</span><span class="ui-win__sub">YuNet 9:16 · Karaoke</span><span class="ui-win__st is-done" data-st>Saved</span><span class="ui-win__age">6</span></li>
-                  <li class="ui-win__row" data-row><span class="ui-avatar" data-tone="3">P2</span><span class="ui-win__who">SaaS Review</span><span class="ui-win__sub">Speaker Cut · Robin</span><span class="ui-win__st is-you" data-st>Active</span><span class="ui-win__age">5</span></li>
-                  <li class="ui-win__row" data-row><span class="ui-avatar" data-tone="4">P3</span><span class="ui-win__who">Stream VOD</span><span class="ui-win__sub">Follow Face · Punch</span><span class="ui-win__st" data-st>Queued</span><span class="ui-win__age">8</span></li>
-                  <li class="ui-win__row" data-row><span class="ui-avatar" data-tone="2">P4</span><span class="ui-win__who">Design Call</span><span class="ui-win__sub">Locked Crop · Clean</span><span class="ui-win__st" data-st>Queued</span><span class="ui-win__age">4</span></li>
-                  <li class="ui-win__row" data-row><span class="ui-avatar" data-tone="5">P5</span><span class="ui-win__who">Webinar Q&amp;A</span><span class="ui-win__sub">Follow Face · Pill</span><span class="ui-win__st is-done" data-st>Saved</span><span class="ui-win__age">5</span></li>
-                </ul>
+  <!-- Screens 3-4: Pinned Chapters Moment (3 human steps) -->
+  <section class="section" id="workflow" style="--h: 2" data-moment="pinned-chapters" aria-labelledby="workflow-h">
+    <div class="wrap mo-pc__grid">
+      <div class="mo-pc__text">
+        <h2 id="workflow-h">How a long video becomes shorts</h2>
+        <ol class="mo-pc__steps">
+          <li class="mo-pc__step">
+            <h3>Queue videos and walk away</h3>
+            <p>Drop recordings from your hard drive or paste YouTube links. Clip Robin works through the whole list in order on your PC.</p>
+            <figure class="mo-pc__visual">
+              <div class="step-card">
+                <div class="step-card__head">
+                  <p class="step-card__title">Step 1: Multi-video batch queue</p>
+                  <span class="cr-chip cr-chip--green">Local files &amp; links</span>
+                </div>
+                <div class="step-visual-box">
+                  <div class="q-item q-item--active">
+                    <div class="q-row"><span>Interview_With_Maya.mp4</span><span class="cr-chip cr-chip--green">Finished</span></div>
+                    <p class="q-sub">8 vertical clips saved to your folder</p>
+                  </div>
+                  <div class="q-item">
+                    <div class="q-row"><span>youtube.com/watch?v=creator-talk</span><span>Clip 3 of 5</span></div>
+                    <p class="q-sub">Pulling audio and finding talking points</p>
+                    <div class="q-bar"><span style="width: 62%"></span></div>
+                  </div>
+                  <div class="q-item">
+                    <div class="q-row"><span>Gameplay_Highlight_Reel.mkv</span><span>Next in line</span></div>
+                    <p class="q-sub">Starts automatically when the current job ends</p>
+                  </div>
+                </div>
               </div>
-            </div>
-          </div>
-        </div>
-        <div class="app__pane app__pane--open">
-          <div class="ui ui-panel ui-term" data-ui="terminal-run" data-ui-still>
-            <div class="ui-term__head">
-              <span class="ui-dots" aria-hidden="true"><i></i><i></i><i></i></span>
-              <span class="ui-term__title">cliprobin/app</span>
-              <span class="ui-meta">local</span>
-              <span class="ui-spacer"></span>
-              <span class="ui-chip ui-chip--plain ui-term__branch"><svg viewBox="0 0 16 16" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="5" cy="3.5" r="1.5"/><circle cx="5" cy="12.5" r="1.5"/><circle cx="11" cy="5.5" r="1.5"/><path d="M5 5v6M11 7c0 2.6-6 1.8-6 4"/></svg>v0.1.30</span>
-            </div>
-            <div class="ui-term__screen" data-term-screen>
-              <div class="ui-term__track" data-term-track>
-                <div class="ui-term__ln ui-term__cmd"><span class="ui-term__cwd">~/<span class="ui-term__up">cliprobin/</span>app</span><span class="ui-term__sig">$</span><span class="ui-term__typed" data-term-cmd>clip --queue</span></div>
-                <div class="ui-term__ln ui-term__meter" data-term-out data-term-meter><span class="ui-term__bar" style="--p:1"><i></i></span><span class="ui-term__count" data-term-count>4 of 4 steps</span></div>
-                <div class="ui-term__ln ui-term__log" data-term-out data-term-step><svg class="ui-term__tick" viewBox="0 0 16 16" aria-hidden="true"><path d="m3.5 8.4 2.8 2.8 6.2-6.4"/></svg><span class="ui-term__path">whisper/audio.py</span><span class="ui-term__n">4,820 words</span><span class="ui-term__t">1.42s</span></div>
-                <div class="ui-term__ln ui-term__log" data-term-out data-term-step><svg class="ui-term__tick" viewBox="0 0 16 16" aria-hidden="true"><path d="m3.5 8.4 2.8 2.8 6.2-6.4"/></svg><span class="ui-term__path">yunet/face_9x16.py</span><span class="ui-term__n">6 clips</span><span class="ui-term__t">910ms</span></div>
-                <div class="ui-term__ln ui-term__log" data-term-out data-term-step><svg class="ui-term__tick" viewBox="0 0 16 16" aria-hidden="true"><path d="m3.5 8.4 2.8 2.8 6.2-6.4"/></svg><span class="ui-term__path">captions/ass.py</span><span class="ui-term__n">6 styles</span><span class="ui-term__t">320ms</span></div>
-                <div class="ui-term__ln ui-term__log" data-term-out data-term-step><svg class="ui-term__tick" viewBox="0 0 16 16" aria-hidden="true"><path d="m3.5 8.4 2.8 2.8 6.2-6.4"/></svg><span class="ui-term__path">ffmpeg/render.py</span><span class="ui-term__n">6 MP4s</span><span class="ui-term__t">1.19s</span></div>
-                <div class="ui-term__ln ui-term__gap" data-term-out aria-hidden="true"></div>
-                <div class="ui-term__ln ui-term__sum" data-term-out><span class="ui-term__key">Upload</span><span class="ui-term__val">0 MB</span><span class="ui-term__dim">(local)</span></div>
-                <div class="ui-term__ln ui-term__sum" data-term-out><span class="ui-term__key">Cost</span><span class="ui-term__val">$0.00</span><span class="ui-term__dim">(on PC)</span></div>
-                <div class="ui-term__ln ui-term__done" data-term-out data-term-done><span class="ui-term__ok"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m4.5 8.3 2.4 2.4 4.6-5"/></svg></span><b>Done</b><span class="ui-term__dim">in 3.84s</span></div>
-                <div class="ui-term__ln ui-term__cmd" data-term-next><span class="ui-term__cwd">~/<span class="ui-term__up">cliprobin/</span>app</span><span class="ui-term__sig">$</span><span class="ui-term__typed"></span><i class="ui-term__caret" aria-hidden="true"></i></div>
+            </figure>
+          </li>
+          <li class="mo-pc__step">
+            <h3>Keep the speaker centered automatically</h3>
+            <p>Wide interviews and moving hosts get cropped cleanly into 9:16 vertical video so faces stay right in the middle of the phone screen.</p>
+            <figure class="mo-pc__visual">
+              <div class="step-card">
+                <div class="step-card__head">
+                  <p class="step-card__title">Step 2: Active speaker framing</p>
+                  <span class="cr-chip cr-chip--green">9:16 vertical lock</span>
+                </div>
+                <div class="step-visual-box">
+                  <div class="reframe-stage">
+                    <div class="speaker-sil" aria-hidden="true"></div>
+                    <div class="speaker-sil speaker-sil--on" aria-hidden="true"></div>
+                    <div class="reframe-box">Active speaker</div>
+                  </div>
+                  <p class="q-sub">Switches cleanly between two speakers or follows a solo host as they move across the frame.</p>
+                </div>
               </div>
-            </div>
-          </div>
-        </div>
+            </figure>
+          </li>
+          <li class="mo-pc__step">
+            <h3>Write timed captions right on your PC</h3>
+            <p>Clip Robin listens to your audio on your own computer and builds word-by-word subtitles without uploading huge files to a website.</p>
+            <figure class="mo-pc__visual">
+              <div class="step-card">
+                <div class="step-card__head">
+                  <p class="step-card__title">Step 3: On-device transcript and captions</p>
+                  <span class="cr-chip cr-chip--amber">Works offline</span>
+                </div>
+                <div class="step-visual-box">
+                  <div class="caption-step-split">
+                    <img src="client/caption-previews/robin__pop.jpg" alt="Example vertical clip showing highlighted word-by-word captions" width="360" height="640">
+                    <div class="transcript-lines">
+                      <div class="t-line t-line--on"><span class="t-time">00:02</span><span>Captions highlight every word as you speak.</span></div>
+                      <div class="t-line"><span class="t-time">00:06</span><span>Fix any spelling right inside the editor.</span></div>
+                      <div class="t-line"><span class="t-time">00:11</span><span>Export ready-to-post clips straight to disk.</span></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </figure>
+          </li>
+        </ol>
       </div>
+      <div class="mo-pc__visuals frame"></div>
     </div>
   </section>
 
-  <section class="section g2" id="features" aria-labelledby="features-h">
-    <div class="wrap">
-      <div class="group">
+  <!-- Screen 5: Real Interactive Caption Examples -->
+  <section class="section ground-surface" id="examples" aria-labelledby="examples-h">
+    <div class="wrap grid grid--top">
+      <div class="span-6">
         <div class="section-head">
-          <h2 id="features-h">Local video clipping features on your PC</h2>
+          <h2 id="examples-h">Six caption styles ready to export. <span class="muted">Pick a look and motion.</span></h2>
+          <p>Every preview here was rendered by Clip Robin. Click a style and animation to see how your shorts will look before you download.</p>
         </div>
-        <div class="grid">
-          <article class="card card--row card--open m-nolift span-6">
-            <h3>Queues local videos and YouTube links</h3>
-            <p>Drop MP4, MKV, MOV, WebM, or AVI files into the batch queue alongside YouTube URLs.</p>
-            <div class="panel" data-fx="gradient-mesh" data-fx-seed="21" data-fx-params='{"drift":0}'>
-              <div class="stage">
-                <div class="at-corner wide" style="--w:680px;--ax:28px;--ay:24px">
-                  <div class="ui ui-files" data-ui="files" data-reading="Queuing {n} of {total}" data-ui-still>
-                    <div class="ui-files__status"><span class="ui-dot"></span><span data-files-status>4 videos queued</span></div>
-                    <ul class="ui-files__grid">
-                      <li class="ui-file is-done">
-                        <span class="ui-file__icon"><img data-icon="youtube" src="assets/icons/youtube.svg" alt=""></span>
-                        <span class="ui-file__name">Podcast #42</span>
-                        <span class="ui-file__kind">YouTube · 1h 48m</span>
-                        <span class="ui-file__bar"><i></i></span>
-                        <span class="ui-file__check"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m4.5 8.2 2.3 2.3 4.7-5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
-                      </li>
-                      <li class="ui-file is-done">
-                        <span class="ui-file__icon"><svg class="ui-file__glyph" viewBox="0 0 24 24" aria-hidden="true"><path d="M6.25 2.75h8L18.75 7.25v14H6.25z"/><path d="M14 2.75v4.75h4.75M9 12.5h6.5M9 15.5h6.5M9 18.5h4"/></svg></span>
-                        <span class="ui-file__name">stream_vod.mkv</span>
-                        <span class="ui-file__kind">Local MKV · 2.4 GB</span>
-                        <span class="ui-file__bar"><i></i></span>
-                        <span class="ui-file__check"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m4.5 8.2 2.3 2.3 4.7-5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
-                      </li>
-                      <li class="ui-file is-done">
-                        <span class="ui-file__icon"><svg class="ui-file__glyph" viewBox="0 0 24 24" aria-hidden="true"><path d="M6.25 2.75h8L18.75 7.25v14H6.25z"/><path d="M14 2.75v4.75h4.75M9 12.5h6.5M9 15.5h6.5M9 18.5h4"/></svg></span>
-                        <span class="ui-file__name">keynote_4k.mov</span>
-                        <span class="ui-file__kind">Local MOV · 1.8 GB</span>
-                        <span class="ui-file__bar"><i></i></span>
-                        <span class="ui-file__check"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m4.5 8.2 2.3 2.3 4.7-5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
-                      </li>
-                      <li class="ui-file is-done">
-                        <span class="ui-file__icon"><img data-icon="zip" src="assets/icons/zip.svg" alt=""></span>
-                        <span class="ui-file__name">shorts_batch.zip</span>
-                        <span class="ui-file__kind">ZIP · 18 clips</span>
-                        <span class="ui-file__bar"><i></i></span>
-                        <span class="ui-file__check"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m4.5 8.2 2.3 2.3 4.7-5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
-                      </li>
-                    </ul>
-                  </div>
-                </div>
-              </div>
+        <div class="cap-controls">
+          <div>
+            <p class="cap-group-label">Caption style</p>
+            <div class="cap-btn-grid" role="group" aria-label="Caption styles">
+              <button class="cap-opt" type="button" data-cap-style="robin" aria-pressed="true">Robin</button>
+              <button class="cap-opt" type="button" data-cap-style="karaoke" aria-pressed="false">Karaoke</button>
+              <button class="cap-opt" type="button" data-cap-style="punch" aria-pressed="false">Punch</button>
+              <button class="cap-opt" type="button" data-cap-style="pill" aria-pressed="false">Pill</button>
+              <button class="cap-opt" type="button" data-cap-style="clean" aria-pressed="false">Clean</button>
+              <button class="cap-opt" type="button" data-cap-style="classic" aria-pressed="false">Classic</button>
             </div>
-          </article>
-
-          <article class="card card--row card--open m-nolift span-6">
-            <h3>Burns 6 video caption styles and hooks</h3>
-            <p>Pick Classic, Robin, Clean, Punch, Pill, or Karaoke subtitles with five motion presets.</p>
-            <div class="panel" data-fx="gradient-mesh" data-fx-seed="22" data-fx-params='{"drift":0}'>
-              <div class="stage">
-                <div class="at-rise fit" style="--fit-max:360px;--ax:max(20px, 50% - 180px);--ay:20px;--ay-sm:16px">
-                  <div class="ui ui-panel ui-checks" data-ui="checklist" data-ui-still>
-                    <div class="ui-checks__head">
-                      <div class="ui-title">ASS Caption Presets</div>
-                      <span class="ui-spacer"></span>
-                      <div class="ui-meta" data-checks-count>6 styles</div>
-                    </div>
-                    <div class="ui-checks__bar"><i data-checks-bar style="--k:1"></i></div>
-                    <ul class="ui-checks__list">
-                      <li class="ui-check is-done"><span class="ui-check__box"><svg viewBox="0 0 16 16"><path d="m4.5 8.2 2.3 2.3 4.7-5"/></svg></span><span class="ui-check__label">Karaoke · 2 words per line</span></li>
-                      <li class="ui-check is-done"><span class="ui-check__box"><svg viewBox="0 0 16 16"><path d="m4.5 8.2 2.3 2.3 4.7-5"/></svg></span><span class="ui-check__label">Robin &amp; Punch · Pop &amp; Glide</span></li>
-                      <li class="ui-check is-done"><span class="ui-check__box"><svg viewBox="0 0 16 16"><path d="m4.5 8.2 2.3 2.3 4.7-5"/></svg></span><span class="ui-check__label">Pill &amp; Clean · Bundled fonts</span></li>
-                    </ul>
-                  </div>
-                </div>
-              </div>
+          </div>
+          <div>
+            <p class="cap-group-label">Word motion</p>
+            <div class="cap-btn-grid" role="group" aria-label="Caption animations">
+              <button class="cap-opt" type="button" data-cap-anim="pop" aria-pressed="true">Pop</button>
+              <button class="cap-opt" type="button" data-cap-anim="glide" aria-pressed="false">Glide</button>
+              <button class="cap-opt" type="button" data-cap-anim="fade" aria-pressed="false">Fade</button>
+              <button class="cap-opt" type="button" data-cap-anim="grow" aria-pressed="false">Grow</button>
+              <button class="cap-opt" type="button" data-cap-anim="sweep" aria-pressed="false">Sweep</button>
             </div>
-          </article>
+          </div>
+          <p class="cap-note" id="cap-desc">Robin highlights the spoken word in emerald green so viewers can follow fast commentary with the sound off.</p>
         </div>
       </div>
-
-      <div class="grid">
-        <article class="card card--row card--open m-nolift span-6">
-          <h3>Transcribes video speech with faster-whisper</h3>
-          <p>CTranslate2 extracts word timestamps on your CPU or NVIDIA GPU without uploading video files.</p>
-          <div class="panel" data-fx="gradient-mesh" data-fx-seed="23" data-fx-params='{"drift":0}'>
-            <div class="stage">
-              <div class="at-rise fit to-edge" style="--fit-max:360px;--ax:max(20px, 50% - 180px);--ay:20px;--ay-sm:16px">
-                <div class="ui ui-panel ui-stat" data-ui="stat" data-from="94" data-to="99" data-suffix="%" data-ui-opts='{"fill":true}' data-ui-still>
-                  <div class="ui-stat__head">
-                    <div class="ui-stat__top">
-                      <span class="ui-stat__label">Word timestamp accuracy</span>
-                      <span class="ui-stat__range">Whisper<svg class="ui-icon" viewBox="0 0 16 16" aria-hidden="true"><path d="m4.5 6.5 3.5 3.5 3.5-3.5"/></svg></span>
-                    </div>
-                    <div class="ui-stat__line">
-                      <span class="ui-stat__num" data-stat-num>99%</span>
-                      <span class="ui-chip ui-chip--plain ui-stat__delta"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M6 9.5v-7M3 5.5l3-3 3 3" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>$0</span>
-                      <span class="ui-stat__sub">on-device CTranslate2</span>
-                    </div>
-                  </div>
-                  <div class="ui-stat__chart">
-                    <svg class="ui-stat__svg" viewBox="0 0 400 120" preserveAspectRatio="none">
-                      <path class="ui-stat__grid" d="M0 30.5H400M0 60.5H400M0 90.5H400"/>
-                      <path class="ui-stat__cover" fill-rule="evenodd" d=""/>
-                      <g class="ui-stat__bars"><rect rx="3" x="0.00" y="39.04" width="21.14" height="80.96"/><rect rx="3" x="29.14" y="34.86" width="21.14" height="85.14"/><rect rx="3" x="58.29" y="31.95" width="21.14" height="88.05"/><rect rx="3" x="87.43" y="28.76" width="21.14" height="91.24"/><rect rx="3" x="116.57" y="32.22" width="21.14" height="87.78"/><rect rx="3" x="145.71" y="26.04" width="21.14" height="93.96"/><rect rx="3" x="174.86" y="24.13" width="21.14" height="95.87"/><rect rx="3" x="204.00" y="21.94" width="21.14" height="98.06"/><rect rx="3" x="233.14" y="25.40" width="21.14" height="94.60"/><rect rx="3" x="262.29" y="19.85" width="21.14" height="100.15"/><rect rx="3" x="291.43" y="21.31" width="21.14" height="98.69"/><rect rx="3" x="320.57" y="18.12" width="21.14" height="101.88"/><rect rx="3" x="349.71" y="17.21" width="21.14" height="102.79"/><rect rx="3" x="378.86" y="14.30" width="21.14" height="105.70"/></g>
-                    </svg>
-                    <div class="ui-stat__axis" aria-hidden="true"><span>12s</span><span>30s</span><span>90s</span></div>
-                  </div>
-                </div>
-              </div>
-            </div>
+      <div class="span-6 start-7">
+        <div class="cap-stage">
+          <div class="cap-phone">
+            <video id="cap-video" src="client/caption-previews/robin__pop.mp4" poster="client/caption-previews/robin__pop.jpg" autoplay muted loop playsinline aria-label="Interactive Clip Robin caption style preview"></video>
           </div>
-        </article>
-
-        <article class="card card--row card--open m-nolift span-6">
-          <h3>Tracks 9:16 video speakers with YuNet</h3>
-          <p>OpenCV YuNet ONNX pairs face boxes with Whisper voice activity for 9:16 speaker framing.</p>
-          <div class="panel" data-fx="gradient-mesh" data-fx-seed="24" data-fx-params='{"drift":0}'>
-            <div class="stage">
-              <div class="at-rise fit" style="--fit-max:340px;--ax:max(20px, 50% - 170px);--ay:20px;--ay-sm:16px">
-                <div class="ui ui-panel ui-toggles" data-ui="toggles" data-ui-still>
-                  <div class="ui-head">
-                    <svg class="ui-icon ui-toggles__ico" viewBox="0 0 16 16" aria-hidden="true"><path d="M8 1.8 13 4v3.6c0 3-2.1 5.4-5 6.6-2.9-1.2-5-3.6-5-6.6V4z"/><path d="m5.8 8 1.6 1.6 3-3.2"/></svg>
-                    <div class="ui-title">9:16 Face Lock</div>
-                    <span class="ui-spacer"></span>
-                    <div class="ui-meta" data-tg-count>3 of 3 on</div>
-                  </div>
-                  <ul class="ui-toggles__list">
-                    <li class="ui-tg">
-                      <span class="ui-tg__text"><span class="ui-tg__label">Follow Speaker</span><span class="ui-tg__sub">YuNet ONNX 9:16 crop</span></span>
-                      <button class="ui-switch is-on" type="button" role="switch" aria-checked="true" aria-label="Follow Speaker"><i></i></button>
-                    </li>
-                    <li class="ui-tg">
-                      <span class="ui-tg__text"><span class="ui-tg__label">Whisper VAD lock</span><span class="ui-tg__sub">Tracks speaking mouth</span></span>
-                      <button class="ui-switch is-on" type="button" role="switch" aria-checked="true" aria-label="Whisper VAD lock"><i></i></button>
-                    </li>
-                    <li class="ui-tg">
-                      <span class="ui-tg__text"><span class="ui-tg__label">Speaker Cuts</span><span class="ui-tg__sub">Two-mic camera switch</span></span>
-                      <button class="ui-switch is-on" type="button" role="switch" aria-checked="true" aria-label="Speaker Cuts"><i></i></button>
-                    </li>
-                  </ul>
-                </div>
-              </div>
-            </div>
-          </div>
-        </article>
-      </div>
-    </div>
-  </section>
-
-  <section class="section" id="captions" aria-labelledby="captions-h">
-    <div class="wrap">
-      <div class="grid">
-        <div class="span-5">
-          <div class="section-head">
-            <h2 id="captions-h">Captions, 9:16 video framing, and hooks</h2>
-          </div>
-          <div class="tabs" role="tablist" aria-label="Studio workflow stages">
-            <button class="tab" type="button" role="tab" id="t-cap" aria-selected="true" aria-controls="p-cap s-cap">Style captions</button>
-            <button class="tab" type="button" role="tab" id="t-face" aria-selected="false" aria-controls="p-face s-face">Track faces</button>
-            <button class="tab" type="button" role="tab" id="t-hook" aria-selected="false" aria-controls="p-hook s-hook">Score hooks</button>
-            <button class="tab" type="button" role="tab" id="t-exp" aria-selected="false" aria-controls="p-exp s-exp">Export shorts</button>
-          </div>
-          <div style="margin-top:var(--s-5)">
-            <div role="tabpanel" id="p-cap" aria-labelledby="t-cap">
-              <p>Preview Classic, Robin, Clean, Punch, Pill, and Karaoke subtitles with Pop, Glide, Fade, Grow, or Sweep animations and 15-word top-line hooks.</p>
-            </div>
-            <div role="tabpanel" id="p-face" aria-labelledby="t-face" hidden>
-              <p>Switch per clip between stationary Locked Crop, Speaker Cuts, or Follow Speaker tracking powered by OpenCV YuNet ONNX at 720&times;1280 30 fps.</p>
-            </div>
-            <div role="tabpanel" id="p-hook" aria-labelledby="t-hook" hidden>
-              <p>Slice videos offline with Fast Interval mode, or turn on AI Hook Finder using Pro credits or your own Gemini, OpenAI, or DeepSeek key.</p>
-            </div>
-            <div role="tabpanel" id="p-exp" aria-labelledby="t-exp" hidden>
-              <p>Generate 12s to 90s vertical clips with custom brand watermarks, save MP4s or a project ZIP archive, or publish directly to YouTube Shorts.</p>
-            </div>
-          </div>
-        </div>
-
-        <div class="frame frame--split frame--lit span-6 start-7" data-fx="gradient-mesh" data-fx-seed="31" data-fx-params='{"drift":0}' role="img" aria-label="Clip Robin caption and 9:16 framing pipeline preview">
-          <div class="stage" id="s-cap">
-            <div class="at-corner fit" style="--fit-max:500px;--ax:32px;--ay:32px">
-              <div class="ui ui-panel ui-pipe" data-ui="pipeline-board" data-ui-still>
-                <div class="ui-pipe__head">
-                  <svg class="ui-icon ui-pipe__branch" viewBox="0 0 16 16" aria-hidden="true"><circle cx="4.5" cy="3.5" r="1.5"/><circle cx="4.5" cy="12.5" r="1.5"/><circle cx="11.5" cy="5" r="1.5"/><path d="M4.5 5v6M11.5 6.5c0 2.6-2.2 3.6-5.6 4.6"/></svg>
-                  <span class="ui-pipe__repo">cliprobin</span><i class="ui-pipe__slash">/</i><code class="ui-pipe__ref">9x16</code>
-                  <span class="ui-pipe__run">#04</span>
-                  <span class="ui-spacer"></span>
-                  <span class="ui-pipe__total"><svg class="ui-icon" viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8.5" r="5.5"/><path d="M8 5.5v3l2 1.25M6.5 1.75h3"/></svg><span data-pipe-total>12s</span></span>
-                  <span class="ui-chip ui-chip--ink ui-chip--live ui-pipe__chip" data-pipe-chip data-done="Rendered">Done</span>
-                </div>
-                <div class="ui-pipe__commit">
-                  <span class="ui-avatar" data-tone="4">CR</span>
-                  <span class="ui-pipe__msg">Karaoke Pop + Top-Line Hook</span>
-                  <code class="ui-pipe__sha">720p</code>
-                  <button class="ui-btn ui-btn--ghost ui-btn--sm ui-pipe__btn" type="button" tabindex="-1" data-pipe-btn data-done="Export">Save</button>
-                </div>
-                <ol class="ui-pipe__steps">
-                  <li class="ui-pipe__step is-done" data-step="checkout"><span class="ui-pipe__ico"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m4.5 8.2 2.3 2.3 4.7-5"/></svg></span><span class="ui-pipe__name"><span class="ui-pipe__tool" aria-hidden="true"><img data-icon="python" src="assets/icons/python.svg" alt=""></span><span class="ui-pipe__nm">Whisper</span></span><code class="ui-pipe__cmd">word timings</code><span class="ui-pipe__time" data-time>4s</span><span class="ui-pipe__bar"><i></i></span></li>
-                  <li class="ui-pipe__step is-done" data-step="install"><span class="ui-pipe__ico"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m4.5 8.2 2.3 2.3 4.7-5"/></svg></span><span class="ui-pipe__name"><span class="ui-pipe__tool" aria-hidden="true"><img data-icon="python" src="assets/icons/python.svg" alt=""></span><span class="ui-pipe__nm">YuNet</span></span><code class="ui-pipe__cmd">720x1280 crop</code><span class="ui-pipe__time" data-time>3s</span><span class="ui-pipe__bar"><i></i></span></li>
-                  <li class="ui-pipe__step is-done" data-step="test"><span class="ui-pipe__ico"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m4.5 8.2 2.3 2.3 4.7-5"/></svg></span><span class="ui-pipe__name"><span class="ui-pipe__tool" aria-hidden="true"><img data-icon="tauri" src="assets/icons/tauri.svg" alt=""></span><span class="ui-pipe__nm">ASS Burn</span></span><code class="ui-pipe__cmd">karaoke__pop</code><span class="ui-pipe__time" data-time="5s">5s</span><span class="ui-pipe__bar"><i></i></span></li>
-                </ol>
-              </div>
-            </div>
-          </div>
-
-          <div class="stage" id="s-face" hidden>
-            <div class="at-rise fit to-edge" style="--fit-max:400px;--ax:max(24px, 50% - 200px);--ay:36px">
-              <div class="ui ui-panel ui-stat" data-ui="stat" data-from="92" data-to="98" data-suffix="%" data-ui-opts='{"fill":true}' data-ui-still>
-                <div class="ui-stat__head">
-                  <div class="ui-stat__top">
-                    <span class="ui-stat__label">Speaker kept in 9:16 center</span>
-                    <span class="ui-stat__range">YuNet<svg class="ui-icon" viewBox="0 0 16 16" aria-hidden="true"><path d="m4.5 6.5 3.5 3.5 3.5-3.5"/></svg></span>
-                  </div>
-                  <div class="ui-stat__line">
-                    <span class="ui-stat__num" data-stat-num>98%</span>
-                    <span class="ui-chip ui-chip--plain ui-stat__delta"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M6 9.5v-7M3 5.5l3-3 3 3" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>30 fps</span>
-                    <span class="ui-stat__sub">720&times;1280 vertical output</span>
-                  </div>
-                </div>
-                <div class="ui-stat__chart">
-                  <svg class="ui-stat__svg" viewBox="0 0 400 120" preserveAspectRatio="none">
-                    <path class="ui-stat__grid" d="M0 30.5H400M0 60.5H400M0 90.5H400"/>
-                    <path class="ui-stat__cover" fill-rule="evenodd" d=""/>
-                    <g class="ui-stat__bars"><rect rx="3" x="0.00" y="39.04" width="21.14" height="80.96"/><rect rx="3" x="29.14" y="34.86" width="21.14" height="85.14"/><rect rx="3" x="58.29" y="31.95" width="21.14" height="88.05"/><rect rx="3" x="87.43" y="28.76" width="21.14" height="91.24"/><rect rx="3" x="116.57" y="32.22" width="21.14" height="87.78"/><rect rx="3" x="145.71" y="26.04" width="21.14" height="93.96"/><rect rx="3" x="174.86" y="24.13" width="21.14" height="95.87"/><rect rx="3" x="204.00" y="21.94" width="21.14" height="98.06"/><rect rx="3" x="233.14" y="25.40" width="21.14" height="94.60"/><rect rx="3" x="262.29" y="19.85" width="21.14" height="100.15"/><rect rx="3" x="291.43" y="21.31" width="21.14" height="98.69"/><rect rx="3" x="320.57" y="18.12" width="21.14" height="101.88"/><rect rx="3" x="349.71" y="17.21" width="21.14" height="102.79"/><rect rx="3" x="378.86" y="14.30" width="21.14" height="105.70"/></g>
-                  </svg>
-                  <div class="ui-stat__axis" aria-hidden="true"><span>00:00</span><span>00:30</span><span>01:00</span></div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div class="stage" id="s-hook" hidden>
-            <div class="at-rise fit" style="--fit-max:380px;--ax:max(24px, 50% - 190px);--ay:36px">
-              <div class="ui ui-notify" data-ui="notify" data-ui-still>
-                <ul class="ui-notify__list" data-notify-list>
-                  <li class="ui-note"><span class="ui-agent ui-note__av" aria-hidden="true"></span><span class="ui-note__text"><span class="ui-note__title">Hook #1 · Score 94/100<time>04:12</time></span><span class="ui-note__body">Why uploading 4K podcasts wastes $30 a month</span></span><span class="ui-btn ui-btn--sm ui-note__btn">Cut</span></li>
-                  <li class="ui-note"><span class="ui-avatar ui-note__av" data-tone="5">H2</span><span class="ui-note__text"><span class="ui-note__title">Hook #2 · Score 91/100<time>18:40</time></span><span class="ui-note__body">How YuNet tracks two speakers on one stage</span></span></li>
-                </ul>
-              </div>
-            </div>
-          </div>
-
-          <div class="stage" id="s-exp" hidden>
-            <div class="at-rise fit" style="--fit-max:360px;--ax:max(24px, 50% - 180px);--ay:36px">
-              <div class="ui ui-panel ui-checks" data-ui="checklist" data-ui-still>
-                <div class="ui-checks__head">
-                  <div class="ui-title">Export &amp; Publish</div>
-                  <span class="ui-spacer"></span>
-                  <div class="ui-meta" data-checks-count>3 ready</div>
-                </div>
-                <div class="ui-checks__bar"><i data-checks-bar style="--k:1"></i></div>
-                <ul class="ui-checks__list">
-                  <li class="ui-check is-done"><span class="ui-check__box"><svg viewBox="0 0 16 16"><path d="m4.5 8.2 2.3 2.3 4.7-5"/></svg></span><span class="ui-check__label">Save single MP4 or project ZIP</span></li>
-                  <li class="ui-check is-done"><span class="ui-check__box"><svg viewBox="0 0 16 16"><path d="m4.5 8.2 2.3 2.3 4.7-5"/></svg></span><span class="ui-check__label">YouTube Shorts OAuth2 upload</span></li>
-                  <li class="ui-check is-done"><span class="ui-check__box"><svg viewBox="0 0 16 16"><path d="m4.5 8.2 2.3 2.3 4.7-5"/></svg></span><span class="ui-check__label">TikTok &amp; Reels export helpers</span></li>
-                </ul>
-              </div>
-            </div>
+          <div class="cap-stage-bar">
+            <span id="cap-label">Style: Robin &middot; Motion: Pop</span>
+            <button class="cap-pause" type="button" id="cap-pause" aria-pressed="false">Pause preview</button>
           </div>
         </div>
       </div>
     </div>
   </section>
 
+  <!-- Screen 6: Local PC Value vs Cloud Subscriptions -->
   <section class="section" id="pricing" aria-labelledby="pricing-h">
     <div class="wrap">
-      <div class="grid">
-        <div class="span-4 stack-4">
-          <h2 id="pricing-h">Pricing and local video plans</h2>
-          <p>Your PC runs Whisper, YuNet, and FFmpeg for unlimited local cuts.</p>
-        </div>
-
-        <article class="card card--plan m-nolift span-4 start-5">
-          <h3>Free video plan</h3>
-          <p>Cut vertical shorts locally for $0.</p>
-          <div class="price"><span class="t-stat">$0</span><span class="t-small muted">/ month</span></div>
-          <a class="btn btn--secondary" href="https://github.com/abdullohtariq/ClipRobin/releases/latest">Get Free installer</a>
-          <ul class="checks">
-            <li>Batch video queue &amp; YouTube links</li>
-            <li>Local faster-whisper transcription</li>
-            <li>YuNet 9:16 speaker framing</li>
-            <li>Classic captions with watermark</li>
-          </ul>
-        </article>
-
-        <article class="card card--plan is-featured m-nolift span-4 start-9" data-glow="edge-glow" data-glow-params='{"fill":1,"wash":0,"speed":400}'>
-          <h3>Pro video plan. <span class="badge">Most popular</span></h3>
-          <p>Remove watermarks, style captions, and score hooks.</p>
-          <div class="price"><span class="t-stat">$12</span><span class="t-small muted">/ month</span></div>
-          <a class="btn btn--primary" data-release-download href="https://github.com/abdullohtariq/ClipRobin/releases/download/v0.1.30/Clip.Robin_0.1.30_x64-setup.exe">Download for Windows</a>
-          <ul class="checks">
-            <li>Watermark-free 720p MP4 &amp; ZIP exports</li>
-            <li>Custom PNG, JPG, or WebP watermarks</li>
-            <li>All 6 caption styles &amp; 5 motions</li>
-            <li>20 Gemini Hook credits + BYOK</li>
-          </ul>
-        </article>
+      <div class="section-head">
+        <h2 id="pricing-h">Free on your own computer. <span class="muted">No monthly minute limits.</span></h2>
       </div>
+      <div class="grid plan-grid">
+        <div class="span-6 plan-box plan-box--accent">
+          <div class="plan-head">
+            <h3>Free desktop app</h3>
+            <span class="plan-price">$0</span>
+          </div>
+          <p>Queue unlimited videos, track speakers in 9:16, generate local transcripts and captions, and save every clip straight to your hard drive. Includes a small Clip Robin watermark.</p>
+        </div>
+        <div class="span-6 plan-box">
+          <div class="plan-head">
+            <h3>Pro upgrade</h3>
+            <span class="plan-price">Optional</span>
+          </div>
+          <p>Remove the watermark, add your own channel logo, use all six caption styles and motions, and turn on smart moment picking when you want help finding hooks.</p>
+        </div>
+      </div>
+      <ul class="rows compare-rows">
+        <li>
+          <span class="rows__name">Monthly cloud bill<small>Cloud clipping websites charge $15 to $79 every month</small></span>
+          <span class="rows__value">$0 on your PC</span>
+        </li>
+        <li>
+          <span class="rows__name">Video length and minute caps<small>Cloud plans cap you at 60 to 300 minutes a month</small></span>
+          <span class="rows__value">Unlimited length</span>
+        </li>
+        <li>
+          <span class="rows__name">Your raw footage<small>No waiting to upload multi-gigabyte podcast recordings</small></span>
+          <span class="rows__value">Stays on your drive</span>
+        </li>
+        <li>
+          <span class="rows__name">Finished clips<small>Never locked behind a renewal or deleted after 3 days</small></span>
+          <span class="rows__value">Yours forever</span>
+        </li>
+      </ul>
     </div>
   </section>
 
-  <section class="section" id="faq" aria-labelledby="faq-h">
+  <!-- Screen 7: FAQ -->
+  <section class="section ground-surface" id="faq" aria-labelledby="faq-h">
     <div class="wrap">
-      <div class="grid">
-        <div class="span-5 stack-4">
-          <h2 id="faq-h">Questions on local video clipping</h2>
-          <p class="mo-wh__text" data-moment="word-highlight" data-moment-opts='{"from":0.95,"to":0.75}'>Every video clip renders on <strong>your Windows PC</strong> with zero upload quotas.</p>
-        </div>
-        <div class="faq span-6 start-7">
-          <div class="faq__item">
-            <h3>Why is Clip Robin cheaper than cloud clippers?</h3>
-            <p>Cloud tools charge $15 to $79 monthly; Clip Robin runs locally for $0.</p>
-          </div>
-          <div class="faq__item">
-            <h3>Is the Clip Robin app open source?</h3>
-            <p>No. Clip Robin is proprietary Windows software shipped as signed installers on GitHub Releases.</p>
-          </div>
-          <div class="faq__item">
-            <h3>Do I need a GPU for video clipping?</h3>
-            <p>No. Windows CPUs work out of the box, and NVIDIA GPUs accelerate Whisper.</p>
-          </div>
-          <div class="faq__item">
-            <h3>How do I get new Clip Robin versions?</h3>
-            <p>Download buttons fetch the latest GitHub Release installer, and the app auto-updates on launch.</p>
-          </div>
-        </div>
+      <div class="section-head">
+        <h2 id="faq-h">Common questions</h2>
+      </div>
+      <div class="faq">
+        <details class="faq__item" open>
+          <summary>Do I need an expensive gaming PC to run Clip Robin?</summary>
+          <p>No. Clip Robin runs on regular Windows 10 and 11 laptops and desktops. If your computer has a dedicated graphics card, it automatically uses it to export clips even faster.</p>
+        </details>
+        <details class="faq__item">
+          <summary>Do my videos get uploaded to a cloud server?</summary>
+          <p>No. Your recordings stay on your own hard drive. Reading speech for captions, centering the speaker, and rendering your finished shorts all run locally on your computer.</p>
+        </details>
+        <details class="faq__item">
+          <summary>Is Clip Robin open source?</summary>
+          <p>No. Clip Robin is proprietary desktop software built for Windows creators. You download the official installer directly and run it on your own machine.</p>
+        </details>
+        <details class="faq__item">
+          <summary>How do I get new versions when you release updates?</summary>
+          <p>Every download button on this page automatically points to our newest Windows release, so you always get the latest version with one click.</p>
+        </details>
       </div>
     </div>
   </section>
 </main>
 
-<footer class="footer closing footer--statement" id="contact" aria-labelledby="close-h">
+<!-- Screen 8: Close & Footer (close-word + footer-statement) -->
+<footer class="footer closing" id="contact" aria-labelledby="close-h">
   <div class="wrap">
-    <div class="closing__cta close--type">
-      <div class="section-head">
-        <h2 id="close-h">Cut vertical video shorts on your PC</h2>
-        <p class="t-small muted">Windows 10 &amp; 11 (64-bit) · Signed installer via GitHub Releases.</p>
+    <div class="closing__cta close--word">
+      <div class="section-head--split">
+        <div>
+          <h2 id="close-h">Download Clip Robin</h2>
+          <p class="t-lead">Free Windows installer (<span data-release-version>v0.1.32</span>). Unlimited video length, no account required to start.</p>
+        </div>
+        <a class="btn btn--primary" data-release-download href="https://github.com/abdullohtariq/ClipRobin/releases/latest">Download for Windows<svg class="m-arrow" viewBox="0 0 12 12" aria-hidden="true"><path class="m-arrow__stem" d="M1 6h8"/><path class="m-arrow__head" d="M4.5 2.5 8 6l-3.5 3.5"/></svg></a>
       </div>
-      <a class="btn btn--primary btn--xl btn--wide" data-release-download href="https://github.com/abdullohtariq/ClipRobin/releases/download/v0.1.30/Clip.Robin_0.1.30_x64-setup.exe">Download for Windows<svg class="m-arrow" viewBox="0 0 12 12" aria-hidden="true"><path class="m-arrow__stem" d="M1 6h8"/><path class="m-arrow__head" d="M4.5 2.5 8 6l-3.5 3.5"/></svg></a>
+      <p class="close__word" aria-hidden="true">Clip Robin</p>
     </div>
+
     <div class="closing__links">
       <div class="grid">
-        <div class="span-4 stack-4">
-          <a class="nav__logo" href="#top">Clip Robin</a>
-          <p class="footer__lede">Local-first vertical video clipping for Windows creators.</p>
+        <div class="span-6 stack-4">
+          <a class="nav__logo brand-logo" href="#top">
+            <img src="client/logo-mark.svg" alt="" width="28" height="24" aria-hidden="true">
+            <span>Clip Robin</span>
+          </a>
+          <p class="footer__lede">Desktop video clipping app for Windows creators. Runs on your PC.</p>
         </div>
-        <div class="span-2 footer__col">
-          <h3>Studio</h3>
+        <div class="span-3 start-7 footer__col">
+          <h3>Product</h3>
           <ul>
             <li><a href="#studio">Batch queue</a></li>
-            <li><a href="#studio">Local engine</a></li>
+            <li><a href="#workflow">How it works</a></li>
+            <li><a href="#examples">Caption styles</a></li>
           </ul>
         </div>
-        <div class="span-2 footer__col">
-          <h3>Features</h3>
-          <ul>
-            <li><a href="#features">Whisper speech</a></li>
-            <li><a href="#features">YuNet face crop</a></li>
-          </ul>
-        </div>
-        <div class="span-2 footer__col">
-          <h3>Captions</h3>
-          <ul>
-            <li><a href="#captions">Six ASS styles</a></li>
-            <li><a href="#captions">AI Hook Finder</a></li>
-          </ul>
-        </div>
-        <div class="span-2 footer__col">
-          <h3>Product</h3>
+        <div class="span-3 footer__col">
+          <h3>Details</h3>
           <ul>
             <li><a href="#pricing">Pricing</a></li>
             <li><a href="#faq">Questions</a></li>
+            <li><a href="privacy.html">Privacy</a></li>
+            <li><a href="terms.html">Terms</a></li>
           </ul>
         </div>
       </div>
       <div class="footer__legal">
-        <span>&copy; 2026 Clip Robin</span>
+        <span>&copy; 2026 Clip Robin &middot; Windows 10 &amp; 11 (64-bit)</span>
         <span><a href="privacy.html">Privacy</a> &nbsp; <a href="terms.html">Terms</a></span>
-        <span class="credits">Product names and logos are trademarks of their owners.</span>
       </div>
     </div>
   </div>
 </footer>
 
+<nav class="actionbar" aria-label="Quick actions">
+  <a class="btn btn--primary" data-release-download href="https://github.com/abdullohtariq/ClipRobin/releases/latest">Download for Windows</a>
+</nav>
+
 <script type="module" src="assets/system.js"></script>
 <script type="module" src="assets/motion/motion.js"></script>
 <script type="module" src="assets/layout/layout.js"></script>
-<script type="module">
-  // Automatically resolve the latest Windows installer (.exe) and version tag from GitHub Releases
-  const REPO = 'abdullohtariq/ClipRobin';
-  const FALLBACK_EXE = 'https://github.com/abdullohtariq/ClipRobin/releases/download/v0.1.30/Clip.Robin_0.1.30_x64-setup.exe';
-  async function syncLatestGitHubRelease() {
-    try {
-      const res = await fetch(`https://api.github.com/repos/${REPO}/releases/latest`, {
-        headers: { Accept: 'application/vnd.github+json' }
-      });
-      if (!res.ok) return;
-      const release = await res.json();
-      const assets = Array.isArray(release.assets) ? release.assets : [];
-      const exeAsset = assets.find(a => typeof a.browser_download_url === 'string' && a.browser_download_url.endsWith('.exe'));
-      const downloadUrl = exeAsset ? exeAsset.browser_download_url : (release.html_url || FALLBACK_EXE);
+<script>
+(() => {
+  // 1. Dynamic latest Windows installer from GitHub Releases
+  const FALLBACK_URL = 'https://github.com/abdullohtariq/ClipRobin/releases/latest';
+  const FALLBACK_VER = 'v0.1.32';
+  fetch('https://api.github.com/repos/abdullohtariq/ClipRobin/releases/latest', {
+    headers: { Accept: 'application/vnd.github+json' }
+  })
+    .then(r => r.ok ? r.json() : null)
+    .then(rel => {
+      if (!rel) return;
+      const ver = rel.tag_name || FALLBACK_VER;
+      const assets = Array.isArray(rel.assets) ? rel.assets : [];
+      const exe = assets.find(a => /setup\.exe$/i.test(a.name))
+        || assets.find(a => /\.exe$/i.test(a.name))
+        || assets.find(a => /\.msi$/i.test(a.name));
+      const url = (exe && exe.browser_download_url) || rel.html_url || FALLBACK_URL;
       document.querySelectorAll('[data-release-download]').forEach(el => {
-        el.setAttribute('href', downloadUrl);
+        el.setAttribute('href', url);
       });
-      if (release.tag_name) {
-        document.querySelectorAll('[data-release-version]').forEach(el => {
-          el.textContent = release.tag_name;
-        });
-      }
-    } catch {
-      // Keep fallback v0.1.30 direct installer link when offline or rate-limited
-    }
+      document.querySelectorAll('[data-release-version]').forEach(el => {
+        el.textContent = ver;
+      });
+    })
+    .catch(() => {});
+
+  // 2. Interactive Caption Style & Motion Switcher (uses real rendered Clip Robin previews)
+  const copy = {
+    robin: 'Robin highlights the spoken word in emerald green so viewers can follow fast commentary with the sound off.',
+    karaoke: 'Karaoke fills each word in rhythm with your voice, great for energetic stories and reaction clips.',
+    punch: 'Punch uses bold, high-contrast display type built for short hooks and strong opinions.',
+    pill: 'Pill wraps the active phrase in a solid badge that stays readable over busy backgrounds.',
+    clean: 'Clean keeps subtitles crisp and minimal for tutorials, interviews, and product walkthroughs.',
+    classic: 'Classic delivers traditional broadcast-style captions with clear timing and subtle motion.'
+  };
+  let curStyle = 'robin';
+  let curAnim = 'pop';
+  let paused = false;
+
+  const video = document.getElementById('cap-video');
+  const desc = document.getElementById('cap-desc');
+  const label = document.getElementById('cap-label');
+  const pauseBtn = document.getElementById('cap-pause');
+  const styleBtns = document.querySelectorAll('[data-cap-style]');
+  const animBtns = document.querySelectorAll('[data-cap-anim]');
+
+  function titleCase(s) { return s.charAt(0).toUpperCase() + s.slice(1); }
+
+  function updatePreview() {
+    if (!video) return;
+    const anim = curStyle === 'classic' ? 'pop' : curAnim;
+    const base = 'client/caption-previews/' + curStyle + '__' + anim;
+    video.poster = base + '.jpg';
+    video.src = base + '.mp4';
+    video.load();
+    if (!paused) video.play().catch(() => {});
+    if (desc) desc.textContent = copy[curStyle] || '';
+    if (label) label.textContent = 'Style: ' + titleCase(curStyle) + ' \u00b7 Motion: ' + titleCase(anim);
+    animBtns.forEach(b => {
+      const isClassic = curStyle === 'classic';
+      b.disabled = isClassic && b.dataset.capAnim !== 'pop';
+      b.setAttribute('aria-pressed', String(b.dataset.capAnim === anim));
+    });
   }
-  syncLatestGitHubRelease();
+
+  styleBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      curStyle = btn.dataset.capStyle;
+      styleBtns.forEach(b => b.setAttribute('aria-pressed', String(b === btn)));
+      updatePreview();
+    });
+  });
+
+  animBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      curAnim = btn.dataset.capAnim;
+      animBtns.forEach(b => b.setAttribute('aria-pressed', String(b === btn)));
+      updatePreview();
+    });
+  });
+
+  if (pauseBtn && video) {
+    pauseBtn.addEventListener('click', () => {
+      paused = !paused;
+      if (paused) video.pause();
+      else video.play().catch(() => {});
+      pauseBtn.setAttribute('aria-pressed', String(paused));
+      pauseBtn.textContent = paused ? 'Play preview' : 'Pause preview';
+    });
+  }
+})();
 </script>
 </body>
 </html>

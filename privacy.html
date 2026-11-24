@@ -1,16 +1,29 @@
 <!doctype html>
-<html lang="en" data-type="software" data-radius="soft">
+<html lang="en" data-type="software" data-radius="soft" data-buttons="pill">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Privacy Policy · Clip Robin</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Privacy: Clip Robin</title>
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
 <link rel="stylesheet" href="assets/system.css">
+<style>
+:root {
+  --p-bg: #09090b; --p-surface: #121215; --p-ink: #f4f4f5; --p-muted: #a1a1aa;
+  --p-accent: #10b981; --p-accent-ink: #09090b; --p-action: #10b981; --p-action-ink: #09090b;
+  --font-display: "Reddit Sans", system-ui, sans-serif;
+  --font-text: "Reddit Sans", system-ui, sans-serif;
+}
+body { background: var(--p-bg); color: var(--p-ink); }
+.doc { max-width: 680px; margin: 0 auto; padding: 72px 24px; }
+.doc h1 { font-size: 36px; margin: 0 0 20px; }
+.doc p { font-size: 16px; line-height: 1.65; color: #d4d4d8; margin: 0 0 16px; }
+</style>
 </head>
 <body>
-<main class="wrap" style="padding-block: 96px; max-width: 720px;">
-  <h1>Privacy Policy</h1>
-  <p style="margin-top: 24px;">Clip Robin processes video inspection, audio extraction, faster-whisper transcription, YuNet ONNX face detection, and FFmpeg rendering locally on your Windows PC. Raw video files are not uploaded to Clip Robin servers.</p>
-  <p style="margin-top: 16px;">When you opt into AI Hook Finder, timestamped transcript text is sent to your configured AI provider (Google Gemini, OpenAI, or DeepSeek). When you connect YouTube Shorts publishing, OAuth2 credentials are used solely to upload the clips you select.</p>
+<main class="doc">
+  <h1>Privacy</h1>
+  <p>Clip Robin processes your videos right on your own Windows computer. Your raw recordings, transcripts, speaker framing, and exported vertical clips stay on your hard drive and are never uploaded to Clip Robin servers.</p>
+  <p>This website checks our public releases feed solely to link the download buttons to the newest Windows installer. No tracking cookies or ad scripts run on this site.</p>
   <p style="margin-top: 32px;"><a class="link" href="index.html">Back to Clip Robin</a></p>
 </main>
 </body>
