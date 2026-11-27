@@ -4,17 +4,42 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Clip Robin: video clipping app for creators</title>
-<meta name="description" content="Turn long podcasts, streams, and tutorials into vertical shorts on your own Windows PC. Queue videos, keep speakers centered, and add captions with zero monthly cloud fees.">
+<meta name="description" content="Turn long podcasts, streams, and tutorials into 9:16 vertical shorts on your own Windows PC. Queue videos, keep speakers centered, and add captions with zero monthly cloud fees.">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://abdullohtariq.github.io/cliprobin-web/">
 <meta property="og:type" content="website">
+<meta property="og:site_name" content="Clip Robin">
+<meta property="og:url" content="https://abdullohtariq.github.io/cliprobin-web/">
 <meta property="og:title" content="Clip Robin: video clipping app for creators">
 <meta property="og:description" content="Turn long videos into 9:16 vertical shorts on your own Windows PC. Queue batches, frame active speakers, and style captions locally.">
-<meta property="og:image" content="share.png">
+<meta property="og:image" content="https://abdullohtariq.github.io/cliprobin-web/share.png">
 <meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Clip Robin: video clipping app for creators">
+<meta name="twitter:description" content="Turn long podcasts, streams, and tutorials into 9:16 vertical shorts on your own Windows PC. $0 monthly cloud fees.">
+<meta name="twitter:image" content="https://abdullohtariq.github.io/cliprobin-web/share.png">
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
 <meta name="theme-color" content="#09090b">
-<!-- <link rel="canonical" href="https://cliprobin.com/"> -->
 <meta name="site-kind" content="software">
 <meta name="page-type" content="software">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "Clip Robin",
+  "applicationCategory": "MultimediaApplication",
+  "operatingSystem": "Windows 10, Windows 11",
+  "softwareVersion": "0.1.33",
+  "description": "Desktop video clipping app for creators. Queue local videos or YouTube links, center active speakers in 9:16 vertical video, and generate styled captions on your own Windows PC.",
+  "url": "https://abdullohtariq.github.io/cliprobin-web/",
+  "downloadUrl": "https://github.com/abdullohtariq/ClipRobin/releases/latest",
+  "image": "https://abdullohtariq.github.io/cliprobin-web/share.png",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  }
+}
+</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Reddit+Sans:wght@400..700&family=JetBrains+Mono:wght@400..500&display=swap" rel="stylesheet">
@@ -52,23 +77,19 @@
   .brand-logo img { width: 28px; height: 24px; display: block; flex: 0 0 auto; }
 
   /* Subtle dark-theme contrast tokens matching Clip Robin desktop app */
-  .cr-surface {
-    background: #121215;
-    border: 1px solid #27272a;
-    border-radius: var(--r-lg);
-    color: #f4f4f5;
-  }
   .cr-chip {
     display: inline-flex;
     align-items: center;
     gap: 6px;
-    padding: 4px 10px;
-    border-radius: 999px;
+    padding: 3px 8px;
+    border-radius: 6px;
     font-size: 13px;
     font-weight: 500;
     background: #18181c;
     border: 1px solid #27272a;
     color: #e4e4e7;
+    white-space: nowrap;
+    flex-shrink: 0;
   }
   .cr-chip--green {
     background: rgba(16, 185, 129, 0.14);
@@ -97,6 +118,7 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
+    gap: 8px;
     padding-bottom: 12px;
     border-bottom: 1px solid #27272a;
     font-size: 13px;
@@ -108,7 +130,7 @@
     flex: 1 1 auto;
     min-height: 0;
     display: grid;
-    grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr);
+    grid-template-columns: minmax(0, 1.02fr) minmax(0, 0.98fr);
     gap: 16px;
     align-items: stretch;
   }
@@ -140,6 +162,7 @@
     font-weight: 500;
     padding: 4px 10px;
     border-radius: 999px;
+    white-space: nowrap;
   }
   .hero-clips {
     display: flex;
@@ -151,31 +174,43 @@
     background: #18181c;
     border: 1px solid #27272a;
     border-radius: 12px;
-    padding: 12px 14px;
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
+    padding: 10px 12px;
+    display: grid;
+    grid-template-columns: 40px minmax(0, 1fr);
+    gap: 10px;
+    align-items: center;
   }
   .hero-clip-card--active {
     border-color: #10b981;
     background: #151c19;
   }
+  .hero-clip-thumb {
+    width: 40px;
+    height: 64px;
+    border-radius: 6px;
+    object-fit: cover;
+    border: 1px solid #27272a;
+    display: block;
+  }
+  .hero-clip-info { display: flex; flex-direction: column; gap: 4px; min-width: 0; }
   .hero-clip-top {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: 8px;
+    gap: 6px;
     font-size: 13px;
     color: #a1a1aa;
   }
-  .hero-clip-score { color: #fbbf24; font-weight: 500; font-family: var(--font-mono); }
-  .hero-clip-title { font-size: 15px; font-weight: 500; color: #f4f4f5; line-height: 1.35; margin: 0; }
+  .hero-clip-score { color: #fbbf24; font-weight: 500; font-family: var(--font-mono); white-space: nowrap; }
+  .hero-clip-title { font-size: 14px; font-weight: 500; color: #f4f4f5; line-height: 1.3; margin: 0; }
   .hero-clip-meta { font-size: 13px; color: #a1a1aa; margin: 0; }
 
   .hero--split .ly-float {
     background: #18181c;
     border: 1px solid #3f3f46;
     color: #f4f4f5;
+    width: auto;
+    max-width: 256px;
   }
   .hero--split .ly-float__row { color: #a1a1aa; }
   .hero--split .ly-float__title { color: #f4f4f5; }
@@ -183,7 +218,7 @@
   /* Section 2: Real Clip Robin App Frame (Queue + Editor) */
   .studio-frame {
     margin-top: var(--s-6);
-    background: #0e0e11;
+    background: transparent;
     border: 1px solid #27272a;
     border-radius: var(--r-lg);
     overflow: hidden;
@@ -192,6 +227,7 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
+    gap: 10px;
     padding: 12px 18px;
     background: #121215;
     border-bottom: 1px solid #27272a;
@@ -234,6 +270,7 @@
     font-weight: 500;
     color: #f4f4f5;
   }
+  .q-row > span:first-child { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; min-width: 0; }
   .q-sub { font-size: 13px; color: #a1a1aa; margin: 0; }
   .q-bar {
     height: 4px;
@@ -265,32 +302,48 @@
     align-items: stretch;
   }
   .ed-frame-wide {
-    position: relative;
     background: #18181c;
     border: 1px solid #27272a;
     border-radius: 12px;
-    padding: 16px;
-    min-height: 210px;
+    padding: 14px;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 116px;
+    gap: 12px;
+    align-items: stretch;
+  }
+  .ed-frame-meta {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+    align-items: flex-start;
+    gap: 12px;
+    min-width: 0;
   }
   .ed-crop-box {
-    position: absolute;
-    top: 16px;
-    bottom: 16px;
-    left: 52%;
-    width: 34%;
     border: 2px solid #10b981;
     border-radius: 8px;
-    background: rgba(16, 185, 129, 0.08);
+    background: #09090b;
+    overflow: hidden;
+    position: relative;
+    min-height: 156px;
     display: flex;
-    align-items: flex-start;
-    justify-content: center;
-    padding-top: 8px;
+    flex-direction: column;
+  }
+  .ed-crop-box img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    flex: 1 1 auto;
+  }
+  .ed-crop-label {
+    background: rgba(16, 185, 129, 0.16);
+    border-top: 1px solid rgba(16, 185, 129, 0.4);
+    padding: 4px 6px;
     font-size: 13px;
     font-weight: 500;
     color: #34d399;
+    text-align: center;
   }
   .ed-controls {
     display: flex;
@@ -305,10 +358,11 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
+    gap: 8px;
     font-size: 14px;
     color: #e4e4e7;
   }
-  .ed-ctrl-val { color: #34d399; font-weight: 500; font-size: 13px; }
+  .ed-ctrl-val { color: #34d399; font-weight: 500; font-size: 13px; white-space: nowrap; }
   .ed-timeline {
     background: #121215;
     border: 1px solid #27272a;
@@ -336,7 +390,7 @@
     border: 1px solid #10b981;
   }
 
-  /* Section 3-4: Pinned Chapters custom dark visual cards */
+  /* Section 3-4: Pinned Chapters custom dark visual cards (2 boxes deep max) */
   #workflow .mo-pc__visuals {
     background: #121215;
     border: 1px solid #27272a;
@@ -345,14 +399,14 @@
   .step-card {
     width: 100%;
     height: 100%;
-    padding: 28px;
+    padding: 24px;
     background:
       radial-gradient(80% 60% at 85% 15%, rgba(16, 185, 129, 0.14), transparent 60%),
       #121215;
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
-    gap: 18px;
+    justify-content: center;
+    gap: 14px;
     color: #f4f4f5;
   }
   .step-card__head {
@@ -362,17 +416,6 @@
     gap: 12px;
   }
   .step-card__title { font-size: 18px; font-weight: 500; margin: 0; color: #f4f4f5; }
-  .step-visual-box {
-    flex: 1 1 auto;
-    background: #09090b;
-    border: 1px solid #27272a;
-    border-radius: 12px;
-    padding: 18px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    gap: 12px;
-  }
   .reframe-stage {
     position: relative;
     height: 220px;
@@ -390,14 +433,13 @@
     height: 112px;
     border-radius: 36px 36px 12px 12px;
     background: #27272a;
-    position: relative;
   }
   .speaker-sil--on { background: #3f3f46; }
   .reframe-box {
     position: absolute;
     top: 14px;
     bottom: 14px;
-    right: 18%;
+    right: 16%;
     width: 124px;
     border: 2px solid #10b981;
     border-radius: 10px;
@@ -412,13 +454,13 @@
   }
   .caption-step-split {
     display: grid;
-    grid-template-columns: 150px minmax(0, 1fr);
+    grid-template-columns: 144px minmax(0, 1fr);
     gap: 16px;
     align-items: center;
   }
   .caption-step-split img {
     width: 100%;
-    height: 240px;
+    height: 230px;
     object-fit: cover;
     border-radius: 10px;
     border: 1px solid #27272a;
@@ -478,13 +520,9 @@
     color: #09090b;
   }
   .cap-note {
-    background: #18181c;
-    border: 1px solid #27272a;
-    border-radius: var(--r-md);
-    padding: 16px 18px;
     font-size: 16px;
-    line-height: 1.5;
-    color: #f4f4f5;
+    line-height: 1.55;
+    color: #d4d4d8;
     margin: 0;
   }
   .cap-stage {
@@ -535,6 +573,7 @@
     color: #f4f4f5;
     font: 500 14px/1 var(--font-text);
     cursor: pointer;
+    white-space: nowrap;
   }
   .cap-pause:hover { border-color: #52525b; }
 
@@ -544,43 +583,64 @@
     background: #121215;
     border: 1px solid #27272a;
     border-radius: var(--r-lg);
-    padding: 24px;
+    padding: 22px 24px;
     display: flex;
     flex-direction: column;
+    justify-content: space-between;
     gap: 12px;
   }
   .plan-box--accent { border-color: rgba(16, 185, 129, 0.55); }
   .plan-head {
     display: flex;
-    align-items: baseline;
+    align-items: center;
     justify-content: space-between;
     gap: 12px;
   }
+  .plan-title-wrap { display: inline-flex; align-items: center; gap: 10px; }
+  .plan-icon { width: 28px; height: 28px; border-radius: 7px; display: block; flex: 0 0 auto; }
   .plan-head h3 { font-size: 20px; margin: 0; color: #f4f4f5; }
-  .plan-price { font-size: 22px; font-weight: 600; color: #34d399; font-family: var(--font-mono); }
+  .plan-price { font-size: 22px; font-weight: 600; color: #34d399; font-family: var(--font-mono); white-space: nowrap; }
   .plan-box p { margin: 0; font-size: 16px; line-height: 1.5; color: #d4d4d8; }
-  .compare-rows { margin-top: var(--s-6); }
+  .plan-action { margin-top: 4px; }
+  .compare-rows { margin-top: var(--s-5); }
   .compare-rows .rows__name small { display: block; font-weight: 400; color: var(--muted); font-size: var(--t-small); }
-  .compare-rows .rows__value { color: #34d399; font-weight: 500; }
+  .compare-rows .rows__value { color: #34d399; font-weight: 500; white-space: nowrap; }
 
-  /* FAQ spacing & contrast */
-  #faq .faq { margin-top: var(--s-5); }
+  /* FAQ spacing & visual */
+  #faq .faq { margin-top: 0; }
   #faq .faq__item { border-color: #27272a; }
+  .faq-card {
+    margin-top: var(--s-5);
+    padding: 20px;
+    border: 1px solid #27272a;
+    border-radius: var(--r-lg);
+    background: #09090b;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+  .faq-card img { width: 44px; height: 44px; border-radius: 10px; display: block; flex: 0 0 auto; }
+  .faq-card p { margin: 0; font-size: 15px; line-height: 1.45; color: #d4d4d8; }
+  .faq-card strong { display: block; color: #f4f4f5; font-weight: 500; margin-bottom: 2px; }
 
-  /* Footer close-word adjustments */
-  footer.closing .close__word { color: #18181c; }
+  /* Footer close-word: avoid clipping ascenders */
+  footer.closing .close__word {
+    color: #18181c;
+    line-height: 1.06;
+    overflow: visible;
+    padding-top: 0.04em;
+  }
 
   /* Responsive adjustments */
   @media (min-width: 640px) and (max-width: 1023px) {
     .studio-queue .q-item:nth-child(n+3) { display: none; }
     .studio-queue, .studio-editor { padding: 14px; gap: 10px; }
-    .ed-frame-wide { min-height: 150px; }
+    .ed-crop-box { min-height: 132px; }
     .cap-stage { min-height: 310px; padding: 16px; margin-top: var(--s-4); }
     .cap-phone { width: 168px; }
     .cap-controls { gap: 14px; margin-top: var(--s-4); }
     .step-card { padding: 16px; gap: 10px; }
-    .step-visual-box { padding: 12px; gap: 8px; }
-    .step-visual-box .q-item:nth-child(n+3) { display: none; }
+    .step-card .q-item:nth-child(n+3) { display: none; }
     .reframe-stage { height: 128px; }
     .caption-step-split { grid-template-columns: 110px minmax(0, 1fr); gap: 12px; }
     .caption-step-split img { height: 148px; }
@@ -594,18 +654,19 @@
   }
   @media (max-width: 639px) {
     .hero--split .hero__media { padding: 12px; }
-    .hero-phone { min-height: 220px; }
+    .hero-phone { min-height: 210px; }
+    .hero-phone__tag { display: none; }
     .ed-preview { grid-template-columns: minmax(0, 1fr); }
-    .ed-frame-wide { min-height: 140px; }
+    .ed-frame-wide { grid-template-columns: minmax(0, 1fr) 96px; padding: 12px; }
+    .ed-crop-box { min-height: 124px; }
     .studio-queue .q-item:nth-child(n+3) { display: none; }
-    .cap-phone { width: 190px; }
-    .cap-stage { min-height: 340px; padding: 16px; margin-top: var(--s-4); }
-    .step-card { padding: 12px; gap: 6px; }
-    .step-visual-box { padding: 8px; gap: 6px; }
-    .step-visual-box .q-item:nth-child(n+2) { display: none; }
-    .reframe-stage { height: 96px; }
-    .caption-step-split { grid-template-columns: 80px minmax(0, 1fr); gap: 8px; }
-    .caption-step-split img { height: 104px; }
+    .cap-phone { width: 186px; }
+    .cap-stage { min-height: 330px; padding: 16px; margin-top: var(--s-4); }
+    .step-card { padding: 14px; gap: 8px; }
+    .step-card .q-item:nth-child(n+2) { display: none; }
+    .reframe-stage { height: 100px; }
+    .caption-step-split { grid-template-columns: 80px minmax(0, 1fr); gap: 10px; }
+    .caption-step-split img { height: 108px; }
     .transcript-lines .t-line:nth-child(n+2) { display: none; }
     #workflow { --hm: 2; min-height: 200lvh; }
     #workflow .mo-pc__steps { gap: 12px; }
@@ -650,7 +711,7 @@
   <section class="hero hero--split" data-enter aria-labelledby="hero-h">
     <div class="wrap"><div class="hero-text grid hero__grid">
       <div class="hero__text span-5">
-        <p class="hero__kicker"><span class="dot" aria-hidden="true"></span>Windows 10 &amp; 11 desktop app &middot; <span data-release-version>v0.1.32</span></p>
+        <p class="hero__kicker" data-release-kicker><span class="dot" aria-hidden="true"></span>Windows 10 &amp; 11 desktop app &middot; v0.1.33</p>
         <h1 id="hero-h">Video clipping app for creators</h1>
         <p class="hero__lead">Turn long podcasts, streams, and tutorials into 9:16 vertical shorts on your own PC. Unlimited video length, $0 monthly cloud fees.</p>
         <div class="btn-row">
@@ -674,19 +735,28 @@
           </div>
           <div class="hero-clips">
             <div class="hero-clip-card hero-clip-card--active">
-              <div class="hero-clip-top"><span>Clip 01 &middot; 0:34</span><span class="hero-clip-score">Strong hook</span></div>
-              <p class="hero-clip-title">Why most podcasts quit after ten episodes</p>
-              <p class="hero-clip-meta">Robin captions &middot; Active speaker crop</p>
+              <img class="hero-clip-thumb" src="client/caption-previews/robin__pop.jpg" alt="Robin style vertical clip preview" width="40" height="64">
+              <div class="hero-clip-info">
+                <div class="hero-clip-top"><span>Clip 01 &middot; 0:34</span><span class="hero-clip-score">Strong hook</span></div>
+                <p class="hero-clip-title">Why most podcasts quit after ten episodes</p>
+                <p class="hero-clip-meta">Robin captions &middot; Active speaker</p>
+              </div>
             </div>
             <div class="hero-clip-card">
-              <div class="hero-clip-top"><span>Clip 02 &middot; 0:48</span><span class="hero-clip-score">Ready</span></div>
-              <p class="hero-clip-title">How we cut editing time from four hours to ten minutes</p>
-              <p class="hero-clip-meta">Karaoke captions &middot; Saved to disk</p>
+              <img class="hero-clip-thumb" src="client/caption-previews/karaoke__pop.jpg" alt="Karaoke style vertical clip preview" width="40" height="64">
+              <div class="hero-clip-info">
+                <div class="hero-clip-top"><span>Clip 02 &middot; 0:48</span><span class="hero-clip-score">Ready</span></div>
+                <p class="hero-clip-title">How we cut editing time from four hours to ten minutes</p>
+                <p class="hero-clip-meta">Karaoke captions &middot; Saved to disk</p>
+              </div>
             </div>
             <div class="hero-clip-card">
-              <div class="hero-clip-top"><span>Clip 03 &middot; 0:26</span><span class="hero-clip-score">Ready</span></div>
-              <p class="hero-clip-title">The one microphone mistake that ruins interviews</p>
-              <p class="hero-clip-meta">Punch captions &middot; Ready for Shorts</p>
+              <img class="hero-clip-thumb" src="client/caption-previews/punch__pop.jpg" alt="Punch style vertical clip preview" width="40" height="64">
+              <div class="hero-clip-info">
+                <div class="hero-clip-top"><span>Clip 03 &middot; 0:26</span><span class="hero-clip-score">Ready</span></div>
+                <p class="hero-clip-title">The one microphone mistake that ruins interviews</p>
+                <p class="hero-clip-meta">Punch captions &middot; Ready for Shorts</p>
+              </div>
             </div>
           </div>
         </div>
@@ -702,9 +772,9 @@
   <section class="section ground-surface" id="studio" aria-labelledby="studio-h">
     <div class="wrap">
       <div class="section-head">
-        <h2 id="studio-h">One queue for all your footage. <span class="muted">Drop files or paste YouTube links.</span></h2>
+        <h2 id="studio-h">Clip Robin batch queue. <span class="muted">Drop files or paste YouTube links.</span></h2>
       </div>
-      <div class="studio-frame ui" aria-label="Clip Robin desktop queue and clip editor preview">
+      <div class="studio-frame ui ui-panel" aria-label="Clip Robin desktop queue and clip editor preview">
         <div class="studio-bar">
           <span>Batch Queue &middot; 4 videos loaded</span>
           <span class="cr-chip cr-chip--amber">No minute quota</span>
@@ -741,9 +811,14 @@
             </div>
             <div class="ed-preview">
               <div class="ed-frame-wide">
-                <span class="cr-chip">Original 16:9 widescreen</span>
-                <div class="ed-crop-box">9:16 speaker lock</div>
-                <span class="q-sub">Tracks face movement smoothly</span>
+                <div class="ed-frame-meta">
+                  <span class="cr-chip">16:9 widescreen</span>
+                  <span class="q-sub">Tracks face movement smoothly so the speaker stays centered.</span>
+                </div>
+                <div class="ed-crop-box">
+                  <img src="client/caption-previews/robin__pop.jpg" alt="9:16 vertical crop locked onto the active speaker" width="116" height="156">
+                  <span class="ed-crop-label">9:16 lock</span>
+                </div>
               </div>
               <div class="ed-controls">
                 <div class="ed-ctrl-row"><span>Framing</span><span class="ed-ctrl-val">Follow speaker</span></div>
@@ -769,7 +844,7 @@
         <h2 id="workflow-h">How a long video becomes shorts</h2>
         <ol class="mo-pc__steps">
           <li class="mo-pc__step">
-            <h3>Queue videos and walk away</h3>
+            <h3>Batch queue for local files and YouTube links</h3>
             <p>Drop recordings from your hard drive or paste YouTube links. Clip Robin works through the whole list in order on your PC.</p>
             <figure class="mo-pc__visual">
               <div class="step-card">
@@ -777,26 +852,24 @@
                   <p class="step-card__title">Step 1: Multi-video batch queue</p>
                   <span class="cr-chip cr-chip--green">Local files &amp; links</span>
                 </div>
-                <div class="step-visual-box">
-                  <div class="q-item q-item--active">
-                    <div class="q-row"><span>Interview_With_Maya.mp4</span><span class="cr-chip cr-chip--green">Finished</span></div>
-                    <p class="q-sub">8 vertical clips saved to your folder</p>
-                  </div>
-                  <div class="q-item">
-                    <div class="q-row"><span>youtube.com/watch?v=creator-talk</span><span>Clip 3 of 5</span></div>
-                    <p class="q-sub">Pulling audio and finding talking points</p>
-                    <div class="q-bar"><span style="width: 62%"></span></div>
-                  </div>
-                  <div class="q-item">
-                    <div class="q-row"><span>Gameplay_Highlight_Reel.mkv</span><span>Next in line</span></div>
-                    <p class="q-sub">Starts automatically when the current job ends</p>
-                  </div>
+                <div class="q-item q-item--active">
+                  <div class="q-row"><span>Interview_With_Maya.mp4</span><span class="cr-chip cr-chip--green">Finished</span></div>
+                  <p class="q-sub">8 vertical clips saved to your folder</p>
+                </div>
+                <div class="q-item">
+                  <div class="q-row"><span>youtube.com/watch?v=creator-talk</span><span>Clip 3 of 5</span></div>
+                  <p class="q-sub">Pulling audio and finding talking points</p>
+                  <div class="q-bar"><span style="width: 62%"></span></div>
+                </div>
+                <div class="q-item">
+                  <div class="q-row"><span>Gameplay_Highlight_Reel.mkv</span><span>Next in line</span></div>
+                  <p class="q-sub">Starts automatically when the current job ends</p>
                 </div>
               </div>
             </figure>
           </li>
           <li class="mo-pc__step">
-            <h3>Keep the speaker centered automatically</h3>
+            <h3>Active speaker framing in 9:16 vertical video</h3>
             <p>Wide interviews and moving hosts get cropped cleanly into 9:16 vertical video so faces stay right in the middle of the phone screen.</p>
             <figure class="mo-pc__visual">
               <div class="step-card">
@@ -804,19 +877,17 @@
                   <p class="step-card__title">Step 2: Active speaker framing</p>
                   <span class="cr-chip cr-chip--green">9:16 vertical lock</span>
                 </div>
-                <div class="step-visual-box">
-                  <div class="reframe-stage">
-                    <div class="speaker-sil" aria-hidden="true"></div>
-                    <div class="speaker-sil speaker-sil--on" aria-hidden="true"></div>
-                    <div class="reframe-box">Active speaker</div>
-                  </div>
-                  <p class="q-sub">Switches cleanly between two speakers or follows a solo host as they move across the frame.</p>
+                <div class="reframe-stage">
+                  <div class="speaker-sil" aria-hidden="true"></div>
+                  <div class="speaker-sil speaker-sil--on" aria-hidden="true"></div>
+                  <div class="reframe-box">Active speaker</div>
                 </div>
+                <p class="q-sub">Switches cleanly between two speakers or follows a solo host as they move across the frame.</p>
               </div>
             </figure>
           </li>
           <li class="mo-pc__step">
-            <h3>Write timed captions right on your PC</h3>
+            <h3>Local captions and transcript on your PC</h3>
             <p>Clip Robin listens to your audio on your own computer and builds word-by-word subtitles without uploading huge files to a website.</p>
             <figure class="mo-pc__visual">
               <div class="step-card">
@@ -824,14 +895,12 @@
                   <p class="step-card__title">Step 3: On-device transcript and captions</p>
                   <span class="cr-chip cr-chip--amber">Works offline</span>
                 </div>
-                <div class="step-visual-box">
-                  <div class="caption-step-split">
-                    <img src="client/caption-previews/robin__pop.jpg" alt="Example vertical clip showing highlighted word-by-word captions" width="360" height="640">
-                    <div class="transcript-lines">
-                      <div class="t-line t-line--on"><span class="t-time">00:02</span><span>Captions highlight every word as you speak.</span></div>
-                      <div class="t-line"><span class="t-time">00:06</span><span>Fix any spelling right inside the editor.</span></div>
-                      <div class="t-line"><span class="t-time">00:11</span><span>Export ready-to-post clips straight to disk.</span></div>
-                    </div>
+                <div class="caption-step-split">
+                  <img src="client/caption-previews/robin__pop.jpg" alt="Example vertical clip showing highlighted word-by-word captions" width="360" height="640">
+                  <div class="transcript-lines">
+                    <div class="t-line t-line--on"><span class="t-time">00:02</span><span>Captions highlight every word as you speak.</span></div>
+                    <div class="t-line"><span class="t-time">00:06</span><span>Fix any spelling right inside the editor.</span></div>
+                    <div class="t-line"><span class="t-time">00:11</span><span>Export ready-to-post clips straight to disk.</span></div>
                   </div>
                 </div>
               </div>
@@ -894,15 +963,21 @@
   <section class="section" id="pricing" aria-labelledby="pricing-h">
     <div class="wrap">
       <div class="section-head">
-        <h2 id="pricing-h">Free on your own computer. <span class="muted">No monthly minute limits.</span></h2>
+        <h2 id="pricing-h">Pricing on your own PC. <span class="muted">No monthly minute limits.</span></h2>
       </div>
       <div class="grid plan-grid">
         <div class="span-6 plan-box plan-box--accent">
           <div class="plan-head">
-            <h3>Free desktop app</h3>
+            <span class="plan-title-wrap">
+              <img class="plan-icon" src="client/clip-robin-icon.png" alt="Clip Robin desktop app icon" width="28" height="28">
+              <h3>Free desktop app</h3>
+            </span>
             <span class="plan-price">$0</span>
           </div>
           <p>Queue unlimited videos, track speakers in 9:16, generate local transcripts and captions, and save every clip straight to your hard drive. Includes a small Clip Robin watermark.</p>
+          <div class="plan-action">
+            <a class="link" data-release-download href="https://github.com/abdullohtariq/ClipRobin/releases/latest">Download free Windows installer</a>
+          </div>
         </div>
         <div class="span-6 plan-box">
           <div class="plan-head">
@@ -910,6 +985,9 @@
             <span class="plan-price">Optional</span>
           </div>
           <p>Remove the watermark, add your own channel logo, use all six caption styles and motions, and turn on smart moment picking when you want help finding hooks.</p>
+          <div class="plan-action">
+            <a class="link" href="#examples">Compare all six caption styles</a>
+          </div>
         </div>
       </div>
       <ul class="rows compare-rows">
@@ -935,27 +1013,36 @@
 
   <!-- Screen 7: FAQ -->
   <section class="section ground-surface" id="faq" aria-labelledby="faq-h">
-    <div class="wrap">
-      <div class="section-head">
-        <h2 id="faq-h">Common questions</h2>
+    <div class="wrap grid grid--top">
+      <div class="span-6">
+        <div class="section-head">
+          <h2 id="faq-h">Common questions</h2>
+          <p>Everything you need to know before downloading the Windows installer.</p>
+        </div>
+        <div class="faq-card">
+          <img src="client/clip-robin-icon.png" alt="Clip Robin Windows app icon" width="44" height="44">
+          <p><strong>Windows 10 &amp; 11 (64-bit)</strong>Runs on your own PC. Free to start, no account required.</p>
+        </div>
       </div>
-      <div class="faq">
-        <details class="faq__item" open>
-          <summary>Do I need an expensive gaming PC to run Clip Robin?</summary>
-          <p>No. Clip Robin runs on regular Windows 10 and 11 laptops and desktops. If your computer has a dedicated graphics card, it automatically uses it to export clips even faster.</p>
-        </details>
-        <details class="faq__item">
-          <summary>Do my videos get uploaded to a cloud server?</summary>
-          <p>No. Your recordings stay on your own hard drive. Reading speech for captions, centering the speaker, and rendering your finished shorts all run locally on your computer.</p>
-        </details>
-        <details class="faq__item">
-          <summary>Is Clip Robin open source?</summary>
-          <p>No. Clip Robin is proprietary desktop software built for Windows creators. You download the official installer directly and run it on your own machine.</p>
-        </details>
-        <details class="faq__item">
-          <summary>How do I get new versions when you release updates?</summary>
-          <p>Every download button on this page automatically points to our newest Windows release, so you always get the latest version with one click.</p>
-        </details>
+      <div class="span-6 start-7">
+        <div class="faq">
+          <details class="faq__item" open>
+            <summary>Do I need an expensive gaming PC to run Clip Robin?</summary>
+            <p>No. Clip Robin runs on regular Windows 10 and 11 laptops and desktops. If your computer has a dedicated graphics card, it automatically uses it to export clips even faster.</p>
+          </details>
+          <details class="faq__item">
+            <summary>Do my videos get uploaded to a cloud server?</summary>
+            <p>No. Your recordings stay on your own hard drive. Reading speech for captions, centering the speaker, and rendering your finished shorts all run locally on your computer.</p>
+          </details>
+          <details class="faq__item">
+            <summary>Is Clip Robin open source?</summary>
+            <p>No. Clip Robin is proprietary desktop software built for Windows creators. You download the official installer directly and run it on your own machine.</p>
+          </details>
+          <details class="faq__item">
+            <summary>How do I get new versions when you release updates?</summary>
+            <p>Every download button on this page automatically points to our newest Windows release, so you always get the latest version with one click.</p>
+          </details>
+        </div>
       </div>
     </div>
   </section>
@@ -968,7 +1055,7 @@
       <div class="section-head--split">
         <div>
           <h2 id="close-h">Download Clip Robin</h2>
-          <p class="t-lead">Free Windows installer (<span data-release-version>v0.1.32</span>). Unlimited video length, no account required to start.</p>
+          <p class="t-lead">Free Windows installer (<span data-release-version>v0.1.33</span>). Unlimited video length, no account required to start.</p>
         </div>
         <a class="btn btn--primary" data-release-download href="https://github.com/abdullohtariq/ClipRobin/releases/latest">Download for Windows<svg class="m-arrow" viewBox="0 0 12 12" aria-hidden="true"><path class="m-arrow__stem" d="M1 6h8"/><path class="m-arrow__head" d="M4.5 2.5 8 6l-3.5 3.5"/></svg></a>
       </div>
@@ -1021,7 +1108,7 @@
 (() => {
   // 1. Dynamic latest Windows installer from GitHub Releases
   const FALLBACK_URL = 'https://github.com/abdullohtariq/ClipRobin/releases/latest';
-  const FALLBACK_VER = 'v0.1.32';
+  const FALLBACK_VER = 'v0.1.33';
   fetch('https://api.github.com/repos/abdullohtariq/ClipRobin/releases/latest', {
     headers: { Accept: 'application/vnd.github+json' }
   })
@@ -1039,6 +1126,9 @@
       });
       document.querySelectorAll('[data-release-version]').forEach(el => {
         el.textContent = ver;
+      });
+      document.querySelectorAll('[data-release-kicker]').forEach(el => {
+        el.innerHTML = '<span class="dot" aria-hidden="true"></span>Windows 10 &amp; 11 desktop app &middot; ' + ver;
       });
     })
     .catch(() => {});
